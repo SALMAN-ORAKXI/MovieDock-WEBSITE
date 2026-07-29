@@ -1,5 +1,5 @@
 export const APK_URL =
-  "https://drive.google.com/file/d/1CZOpx-tWk4yXA-sGmB8xaVtkTnfmxMhQ/view?usp=drive_link";
+  "https://www.dropbox.com/scl/fi/hzfm304hyjgseswmg3i3j/MovieDock.apk?rlkey=5bxuh6y5h1mkvumtvy68bi4ml&st=t9784fht&dl=0";
 
 export const SUPABASE_URL = "https://lrjuakelenZmpaqvdzht.supabase.co";
 const SUPABASE_KEY = import.meta.env.VITE_MOVIEDOCK_SUPABASE_KEY as string | undefined;
