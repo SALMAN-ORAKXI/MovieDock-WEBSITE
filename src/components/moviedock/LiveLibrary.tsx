@@ -3,14 +3,18 @@ import { fetchLatestMovies } from "@/lib/moviedock";
 import { Reveal } from "./Reveal";
 import { useEffect, useState } from "react";
 
+const TMDB = 'https://image.tmdb.org/t/p/w342';
+const fallbackPosters = [
+  `${TMDB}/qmDpIHrmpJINaRKAfWQfftjCdyi.jpg`, // Inception
+  `${TMDB}/qJ2tW6WMUDux911r6m7haRef0WH.jpg`, // The Dark Knight
+  `${TMDB}/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg`, // Interstellar
+];
+
 const fallback = [
-  { title: 'Inception' },
-  { title: 'The Dark Knight' },
-  { title: 'Interstellar' },
-  { title: 'Pulp Fiction' },
-  { title: 'Spirited Away' },
-  { title: 'The Fellowship of the Ring' },
-].map((m, i) => ({ id: i, title: m.title }));
+  { title: 'Inception', poster: fallbackPosters[0] },
+  { title: 'The Dark Knight', poster: fallbackPosters[1] },
+  { title: 'Interstellar', poster: fallbackPosters[2] },
+].map((m, i) => ({ id: i, title: m.title, poster: m.poster }));
 
 function formatCount(n: number) {
   if (n >= 1_000_000) return `${Math.floor(n / 1_000_000)}M`;
@@ -43,30 +47,12 @@ function DownloadCounter({ target }: { target: number }) {
   );
 }
 
-function ReviewRotator({ seed }: { seed: number }) {
-  const reviews = [
-    '"Love this app — so easy to find what to watch!"',
-    '"Great UI and fast. Watched with friends using the built-in links."',
-    '"Smooth experience on mobile and during watch parties."',
-    '"Download was quick, and the app just works."',
-    '"Five stars — highly recommend MovieDock!"'
-  ];
-  const [idx, setIdx] = useState(seed % reviews.length);
-  useEffect(() => {
-    const iv = setInterval(() => setIdx(i => (i + 1) % reviews.length), 3500 + (seed % 3) * 300);
-    return () => clearInterval(iv);
-  }, [seed]);
-  return (
-    <div className="text-sm text-muted-foreground h-16 overflow-hidden flex items-center">
-      <div className="transition-opacity duration-500 italic">{reviews[idx]}</div>
-    </div>
-  );
-}
-
 function MovieCard({ m, i }: { m: any; i: number }) {
   const [copied, setCopied] = useState(false);
   const apkLink = (typeof window !== 'undefined' && (window as any).__MOVIEDOCK_APK) || '/';
   const targetDownloads = 10000 + i * 2300 + Math.floor(Math.random() * 4000);
+
+  const posterUrl = m.poster || (m.poster_path ? `${TMDB}${m.poster_path}` : fallbackPosters[i % fallbackPosters.length]);
 
   const handleShare = async () => {
     const shareUrl = apkLink || (typeof window !== 'undefined' ? window.location.href : '/');
@@ -89,49 +75,56 @@ function MovieCard({ m, i }: { m: any; i: number }) {
 
   return (
     <Reveal delay={i * 0.05}>
-      <div className="group h-full overflow-hidden rounded-3xl border border-border bg-card/70 backdrop-blur-sm p-4 shadow-lg transform transition duration-400 hover:-translate-y-1 hover:scale-[1.01]" style={{ willChange: 'transform, opacity' }}>
+      <div className="group h-full overflow-hidden rounded-3xl border border-border bg-card/70 backdrop-blur-sm p-0 shadow-lg transform transition duration-400 hover:-translate-y-1 hover:scale-[1.01]" style={{ willChange: 'transform, opacity' }}>
         <div className="flex flex-col h-full justify-between gap-3">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-lg font-semibold leading-tight">{m.title}</h3>
-              <p className="mt-1 text-xs text-muted-foreground">Trending & watchable</p>
-            </div>
-            <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-2 py-1 text-xs font-medium text-primary">
-              <span className="h-2 w-2 animate-pulse rounded-full bg-primary" /> Live
-            </div>
+          {/* Poster image */}
+          <div className="overflow-hidden rounded-t-3xl bg-muted">
+            <img
+              src={posterUrl}
+              alt={`${m.title} poster`}
+              loading="lazy"
+              decoding="async"
+              className="w-full h-56 object-cover block transition-transform duration-500 group-hover:scale-105"
+            />
           </div>
 
-          <div className="flex items-center justify-center py-2">
-            <div className="flex flex-col items-center justify-center w-full">
-              <div className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-3 shadow-md">
+          <div className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-semibold leading-tight">{m.title}</h3>
+                <p className="mt-1 text-xs text-muted-foreground">Trending & watchable</p>
+              </div>
+              <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-2 py-1 text-xs font-medium text-primary mr-2">
+                <span className="h-2 w-2 animate-pulse rounded-full bg-primary" /> Live
+              </div>
+            </div>
+
+            <div className="mt-4">
+              <div className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-3 shadow-md w-full">
                 <DownloadCounter target={targetDownloads} />
               </div>
-              <div className="mt-3 w-full">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="rounded-full bg-amber-400/10 p-2 text-amber-400">★ ★ ★ ★ ☆</div>
-                    <div className="text-xs text-muted-foreground">4.3 · 1.2k reviews</div>
-                  </div>
-                  <div className="text-xs text-muted-foreground">Updated just now</div>
-                </div>
 
-                <div className="mt-3 p-3 rounded-lg bg-white/5">
-                  <ReviewRotator seed={i} />
+              <div className="mt-3 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="rounded-full bg-amber-400/10 p-2 text-amber-400">★ ★ ★ ★ ☆</div>
+                  <div className="text-xs text-muted-foreground">4.3 · 1.2k reviews</div>
                 </div>
+                <div className="text-xs text-muted-foreground">Updated just now</div>
+              </div>
+
+              <div className="mt-4 flex items-center justify-between">
+                <a href={apkLink} className="inline-flex items-center gap-2 rounded-full bg-white text-primary px-4 py-2 text-sm font-semibold shadow-sm hover:brightness-95 transition" target="_blank" rel="noreferrer">
+                  Download APK
+                </a>
+
+                <button onClick={handleShare} aria-label={`Share ${m.title}`} className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-pink-500 to-purple-600 px-3 py-2 text-sm font-semibold text-white shadow-lg hover:opacity-95 transition">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-share"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+                  {copied ? 'Copied' : 'Share'}
+                </button>
               </div>
             </div>
           </div>
 
-          <div className="mt-2 flex items-center justify-between">
-            <a href={apkLink} className="inline-flex items-center gap-2 rounded-full bg-white text-primary px-4 py-2 text-sm font-semibold shadow-sm hover:brightness-95 transition" target="_blank" rel="noreferrer">
-              Download APK
-            </a>
-
-            <button onClick={handleShare} aria-label={`Share ${m.title}`} className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-pink-500 to-purple-600 px-3 py-2 text-sm font-semibold text-white shadow-lg hover:opacity-95 transition">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-share"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
-              {copied ? 'Copied' : 'Share'}
-            </button>
-          </div>
         </div>
       </div>
     </Reveal>
@@ -149,7 +142,7 @@ export function LiveLibrary() {
     refetchIntervalInBackground: true,
   });
 
-  const movies = data && data.length > 0 ? data.map((x: any, i: number) => ({ id: x.id ?? i, title: x.title ?? x.name ?? 'Untitled' })) : fallback;
+  const movies = data && data.length > 0 ? data.map((x: any, i: number) => ({ id: x.id ?? i, title: x.title ?? x.name ?? 'Untitled', poster: x.poster ?? x.poster_path })) : fallback;
 
   return (
     <section id="library" className="mx-auto max-w-6xl px-5 py-20 sm:py-28">
@@ -158,15 +151,15 @@ export function LiveLibrary() {
           <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" /> Live library
         </span>
         <h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">
-          Fresh picks & live stats
+          Featured picks
         </h2>
         <p className="mx-auto mt-3 max-w-md text-muted-foreground">
-          Live download counters, rotating reviews, and easy sharing — designed for mobile.
+          Top picks with live download counters and easy sharing.
         </p>
       </Reveal>
 
       <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-        {movies.slice(0, 6).map((m: any, i: number) => (
+        {movies.slice(0, 3).map((m: any, i: number) => (
           <MovieCard key={m.id} m={m} i={i} />
         ))}
       </div>
