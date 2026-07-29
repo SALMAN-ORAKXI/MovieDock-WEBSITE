@@ -2,14 +2,15 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchLatestMovies } from "@/lib/moviedock";
 import { Reveal } from "./Reveal";
 
+const TMDB = 'https://image.tmdb.org/t/p/w780';
 const fallback = [
-  "Inception",
-  "The Dark Knight",
-  "Interstellar",
-  "Pulp Fiction",
-  "Spirited Away",
-  "The Fellowship of the Ring",
-].map((title, i) => ({ id: i, title, poster: null as string | null }));
+  { title: 'Inception', poster: `${TMDB}/qmDpIHrmpJINaRKAfWQfftjCdyi.jpg` },
+  { title: 'The Dark Knight', poster: `${TMDB}/qJ2tW6WMUDux911r6m7haRef0WH.jpg` },
+  { title: 'Interstellar', poster: `${TMDB}/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg` },
+  { title: 'Pulp Fiction', poster: `${TMDB}/dM2w364MScsjFf8pfMbaWUcWrR.jpg` },
+  { title: 'Spirited Away', poster: `${TMDB}/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg` },
+  { title: 'The Fellowship of the Ring', poster: `${TMDB}/rCzpDGLbOoPwLjy3OAm5NUPOTrC.jpg` },
+].map((m, i) => ({ id: i, title: m.title, poster: m.poster }));
 
 export function LiveLibrary() {
   const { data } = useQuery({
@@ -41,14 +42,23 @@ export function LiveLibrary() {
       <div className="mt-12 grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3">
         {movies.slice(0, 6).map((m, i) => (
           <Reveal key={m.id} delay={i * 0.05}>
-            <div className="group h-full overflow-hidden rounded-3xl border border-border bg-card p-3 shadow-[0_18px_50px_-30px_rgba(0,0,0,0.45)] transition-transform duration-300 hover:-translate-y-1">
-              <div className="aspect-2/3 overflow-hidden rounded-2xl bg-secondary">
+            <div className="group h-full overflow-hidden rounded-3xl border border-border bg-card p-3 shadow-[0_18px_50px_-30px_rgba(0,0,0,0.45)] transition-transform duration-300 hover:-translate-y-1" style={{ willChange: 'transform, opacity' }}>
+              <div className="aspect-2/3 overflow-hidden rounded-2xl bg-secondary relative">
                 {m.poster ? (
                   <img
                     src={m.poster}
                     alt={`${m.title} poster`}
                     loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    decoding="async"
+                    width={300}
+                    height={450}
+                    style={{ opacity: 0, transition: 'opacity 420ms ease, transform 420ms ease', transform: 'scale(1.02)' }}
+                    className="h-full w-full object-cover block"
+                    onLoad={(e) => {
+                      const img = e.currentTarget as HTMLImageElement;
+                      img.style.opacity = '1';
+                      img.style.transform = 'none';
+                    }}
                   />
                 ) : (
                   <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-secondary to-muted text-3xl font-semibold text-muted-foreground">
