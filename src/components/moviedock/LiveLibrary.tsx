@@ -1,6 +1,7 @@
 ﻿import { useQuery } from "@tanstack/react-query";
 import { fetchLatestMovies, APK_URL } from "@/lib/moviedock";
 import { Reveal } from "./Reveal";
+import posterFallback from "@/assets/app-screen-light.jpg";
 
 const TMDB = 'https://image.tmdb.org/t/p/w780';
 const fallback = [
@@ -46,6 +47,7 @@ export function LiveLibrary() {
                     loading="lazy"
                     decoding="async"
                     className="w-full h-72 sm:h-80 md:h-96 object-cover block"
+                    onError={(e) => { const img = e.currentTarget as HTMLImageElement; if (img.src !== posterFallback) img.src = posterFallback; }}
                   />
                 ) : (
                   <div className="flex h-72 sm:h-80 md:h-96 items-center justify-center bg-gradient-to-br from-secondary to-muted text-3xl font-bold text-muted-foreground">

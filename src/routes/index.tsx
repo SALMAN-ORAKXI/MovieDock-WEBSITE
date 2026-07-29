@@ -242,21 +242,26 @@ function Index() {
       </section>
 
       <footer className="border-t border-border px-5 py-10">
-        <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 text-sm text-muted-foreground sm:flex-row sm:justify-between">
-          <span className="text-base font-semibold tracking-tight text-foreground">
-            Movie<span className="text-primary">Dock</span>
-          </span>
-          <div className="flex items-center gap-6">
-            <a
-              href="https://privacyand.netlify.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="transition-colors hover:text-foreground"
-            >
-              Privacy Policy
-            </a>
-            <span>© {new Date().getFullYear()} MovieDock</span>
-            <span className="text-sm text-muted-foreground">Developed by Salman Khan</span>
+        <div className="mx-auto max-w-6xl text-sm text-muted-foreground">
+          <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
+            <span className="text-base font-semibold tracking-tight text-foreground">
+              Movie<span className="text-primary">Dock</span>
+            </span>
+            <div className="flex items-center gap-6">
+              <a
+                href="https://privacyand.netlify.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-colors hover:text-foreground"
+              >
+                Privacy Policy
+              </a>
+              <span>© {new Date().getFullYear()} MovieDock</span>
+            </div>
+          </div>
+
+          <div className="mt-4 text-center text-xs font-semibold tracking-wide text-foreground">
+            DEVELOPED BY SALMAN KHAN
           </div>
         </div>
       </footer>
