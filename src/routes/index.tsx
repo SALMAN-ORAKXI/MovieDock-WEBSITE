@@ -256,6 +256,7 @@ function Index() {
               Privacy Policy
             </a>
             <span>© {new Date().getFullYear()} MovieDock</span>
+            <span className="text-sm text-muted-foreground">Developed by Salman Khan</span>
           </div>
         </div>
       </footer>
