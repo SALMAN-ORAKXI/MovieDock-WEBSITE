@@ -48,18 +48,18 @@ const features = [
 const steps = [
   {
     n: "1",
-    title: "Download the APK",
-    text: "Tap the button above. The MovieDock.apk file lands in your Downloads folder in seconds.",
+    title: "Tap download",
+    text: "Click the button and the MovieDock APK starts downloading directly from this site.",
   },
   {
     n: "2",
-    title: "Allow unknown sources",
-    text: "Android will ask for permission once: Settings → Apps → Special access → Install unknown apps → allow your browser.",
+    title: "Open the file",
+    text: "When the download finishes, tap the APK file to open it on your Android device.",
   },
   {
     n: "3",
-    title: "Install and open",
-    text: "Tap the file, confirm the install, then hit Open. No account, no setup — the library is ready.",
+    title: "Install and enjoy",
+    text: "Allow installation if prompted, then open the app and start watching.",
   },
 ];
 
@@ -67,6 +67,7 @@ function DownloadButton({ large = false }: { large?: boolean }) {
   return (
     <a
       href={APK_URL}
+      download="MovieDock.apk"
       className={`pulse-cta inline-flex items-center justify-center gap-2.5 rounded-full bg-primary font-semibold text-primary-foreground transition-transform duration-200 ease-out hover:scale-105 active:scale-100 ${
         large ? "px-9 py-4 text-base sm:text-lg" : "px-5 py-2.5 text-sm"
       }`}
@@ -92,6 +93,7 @@ function Index() {
           </div>
           <a
             href={APK_URL}
+            download="MovieDock.apk"
             className="shrink-0 rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background transition-transform duration-200 hover:scale-105"
           >
             Download
@@ -213,7 +215,7 @@ function Index() {
         <Reveal className="text-center">
           <p className="text-sm font-medium text-primary">Installation</p>
           <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
-            Installed in three steps
+            One tap to install
           </h2>
         </Reveal>
 
