@@ -2,7 +2,7 @@ import { o as __toESM } from "../_runtime.mjs";
 import { i as require_react, n as QueryClientProvider, r as require_jsx_runtime } from "../_libs/react+tanstack__react-query.mjs";
 import { c as HeadContent, d as Outlet, f as lazyRouteComponent, g as useRouter, h as Link, m as createRootRouteWithContext, p as createFileRoute, s as Scripts, u as createRouter } from "../_libs/@tanstack/react-router+[...].mjs";
 import { t as QueryClient } from "../_libs/tanstack__query-core.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/router-BcrklzCk.js
+//#region node_modules/.nitro/vite/services/ssr/assets/router-CWhl3Bh6.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var styles_default = "/assets/styles-BG3Mte6H.css";
@@ -110,6 +110,10 @@ var Route$2 = createRootRouteWithContext()({
 				content: "MovieDock"
 			},
 			{
+				name: "google-site-verification",
+				content: "NhPDdeUA4e58lgelt3il5KTAcy-yNYUK88xRZlo8l9k"
+			},
+			{
 				property: "og:title",
 				content: "MovieDock — Download Android APK"
 			},
@@ -122,8 +126,24 @@ var Route$2 = createRootRouteWithContext()({
 				content: "website"
 			},
 			{
+				property: "og:image",
+				content: "/android-chrome-512.png"
+			},
+			{
+				property: "og:image:width",
+				content: "512"
+			},
+			{
+				property: "og:image:height",
+				content: "512"
+			},
+			{
 				name: "twitter:card",
 				content: "summary_large_image"
+			},
+			{
+				name: "theme-color",
+				content: "#0b1020"
 			}
 		],
 		links: [
@@ -146,8 +166,27 @@ var Route$2 = createRootRouteWithContext()({
 			},
 			{
 				rel: "icon",
+				href: "/favicon.png",
+				type: "image/png"
+			},
+			{
+				rel: "icon",
 				href: "/favicon.ico",
 				type: "image/x-icon"
+			},
+			{
+				rel: "icon",
+				href: "/favicon.svg",
+				type: "image/svg+xml"
+			},
+			{
+				rel: "apple-touch-icon",
+				href: "/apple-touch-icon.png",
+				sizes: "180x180"
+			},
+			{
+				rel: "manifest",
+				href: "/site.webmanifest"
 			}
 		]
 	}),
