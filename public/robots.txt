@@ -12,3 +12,6 @@ Allow: /
 
 User-agent: *
 Allow: /
+
+Sitemap: https://moviedock.lovable.app/sitemap.xml
+Host: moviedock.lovable.app
