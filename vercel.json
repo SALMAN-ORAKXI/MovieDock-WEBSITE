@@ -1,8 +1,17 @@
 {
-  "rewrites": [
+  "routes": [
     {
-      "source": "/(.*)",
-      "destination": "/"
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable"
+      },
+      "src": "/assets/(.*)"
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/__server"
     }
   ]
 }
