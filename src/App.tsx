@@ -40,8 +40,39 @@ export default function App() {
   const [heroImg2Error, setHeroImg2Error] = useState(false);
   const [sigError, setSigError] = useState(false);
 
-  // Official GitHub Release Direct CDN Download URL
-  const GITHUB_RELEASE_APK = 'https://github.com/SALMAN-ORAKXI/MovieDock-WEBSITE/releases/download/v1.2.0/app-release.apk';
+  // Dynamic GitHub Release Auto-State (With safe instant fallback)
+  const [releaseData, setReleaseData] = useState({
+    version: 'v1.2.0',
+    size: '101.5 MB',
+    downloadUrl: 'https://github.com/SALMAN-ORAKXI/MovieDock-WEBSITE/releases/download/v1.2.0/app-release.apk',
+    totalDownloads: 21700
+  });
+
+  // ⚡ AUTO-CHECK GITHUB RELEASES API
+  useEffect(() => {
+    const fetchLatestRelease = async () => {
+      try {
+        const response = await fetch('https://api.github.com/repos/SALMAN-ORAKXI/MovieDock-WEBSITE/releases/latest');
+        if (response.ok) {
+          const data = await response.json();
+          if (data && data.assets && data.assets.length > 0) {
+            const apkAsset = data.assets.find((a: any) => a.name.endsWith('.apk')) || data.assets[0];
+            const sizeInMB = (apkAsset.size / (1024 * 1024)).toFixed(1) + ' MB';
+            setReleaseData({
+              version: data.tag_name || 'v1.2.0',
+              size: sizeInMB,
+              downloadUrl: apkAsset.browser_download_url,
+              totalDownloads: (apkAsset.download_count || 0) + 21700
+            });
+          }
+        }
+      } catch (err) {
+        console.log('Using default release fallback');
+      }
+    };
+
+    fetchLatestRelease();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 15);
@@ -52,10 +83,10 @@ export default function App() {
   const handleDownload = () => {
     setDownloading(true);
     
-    // Direct trigger from GitHub Release Fast CDN
+    // Direct trigger from Auto-Fetched GitHub Release Link
     const link = document.createElement('a');
-    link.href = GITHUB_RELEASE_APK;
-    link.download = 'MovieDock-v1.2.0.apk';
+    link.href = releaseData.downloadUrl;
+    link.download = `MovieDock-${releaseData.version}.apk`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -95,7 +126,7 @@ export default function App() {
           scrolled ? 'shadow-[0_20px_45px_-10px_rgba(56,189,248,0.25)] bg-white/75 scale-[0.99]' : ''
         }`}>
           
-          {/* Logo with App Icon Image */}
+          {/* Logo with App Icon */}
           <div 
             onClick={() => { setCurrentPage('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} 
             className="flex items-center gap-3 cursor-pointer group"
@@ -118,7 +149,9 @@ export default function App() {
             <div className="flex flex-col">
               <span className="font-extrabold text-base tracking-tight text-slate-900 flex items-center gap-1.5">
                 MovieDock
-                <span className="px-2 py-0.5 text-[9px] font-black uppercase tracking-wider bg-sky-100 text-sky-700 border border-sky-200/80 rounded-full">v1.2</span>
+                <span className="px-2 py-0.5 text-[9px] font-black uppercase tracking-wider bg-sky-100 text-sky-700 border border-sky-200/80 rounded-full">
+                  {releaseData.version}
+                </span>
               </span>
               <span className="text-[10px] text-slate-500 font-semibold -mt-0.5">Android 4K Portal</span>
             </div>
@@ -171,7 +204,6 @@ export default function App() {
           </button>
         </nav>
 
-        {/* Mobile Dropdown Sheet */}
         {mobileMenuOpen && (
           <div className="md:hidden absolute top-20 left-4 right-4 bg-white/95 backdrop-blur-2xl rounded-3xl p-5 shadow-2xl border border-white flex flex-col gap-2">
             <button onClick={() => { setCurrentPage('home'); setMobileMenuOpen(false); setTimeout(() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' }), 50); }} className="flex items-center gap-2.5 text-left text-slate-800 font-bold px-4 py-2.5 rounded-2xl hover:bg-sky-50">
@@ -209,7 +241,7 @@ export default function App() {
                 </span>
                 <span className="text-slate-300">•</span>
                 <span className="flex items-center gap-1 text-sky-600">
-                  <Flame className="w-3.5 h-3.5 fill-sky-400 stroke-none" /> 21.7K+ Downloads
+                  <Flame className="w-3.5 h-3.5 fill-sky-400 stroke-none" /> {releaseData.totalDownloads.toLocaleString()}+ Downloads
                 </span>
                 <span className="text-slate-300">•</span>
                 <span className="flex items-center gap-1 text-emerald-600">
@@ -227,7 +259,7 @@ export default function App() {
                 Experience crystal clear 4K HDR playback, multi-language dual audio, and lightning-fast direct offline downloads to phone storage.
               </p>
 
-              {/* Download CTA Pill */}
+              {/* Download CTA Pill (Auto-Updated Specs) */}
               <div className="w-full max-w-xl flex flex-col items-center gap-3.5">
                 <button
                   onClick={handleDownload}
@@ -245,7 +277,7 @@ export default function App() {
                           {downloading ? 'Starting Direct Download...' : 'Download MovieDock APK'}
                         </div>
                         <div className="text-[11px] text-slate-500 font-semibold">
-                          v1.2.0 • Android 8.0+
+                          {releaseData.version} • {releaseData.size} • Android 8.0+
                         </div>
                       </div>
                     </div>
@@ -262,7 +294,7 @@ export default function App() {
                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/60 hover:bg-white/90 border border-white/90 text-slate-600 hover:text-slate-900 text-xs font-bold transition-all shadow-[0_2px_10px_rgba(0,0,0,0.03)]"
                 >
                   <Smartphone className="w-3.5 h-3.5 text-sky-500 stroke-[2]" />
-                  <span>Alternative Direct APK Mirror (GitHub Fast CDN)</span>
+                  <span>Direct GitHub CDN Mirror ({releaseData.size})</span>
                 </button>
               </div>
 
@@ -457,7 +489,7 @@ export default function App() {
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {[
-                  { step: "01", icon: ArrowDownToLine, title: "Download APK File", desc: "Tap the Download APK button to save 'MovieDock-v1.2.0.apk' onto your Android device." },
+                  { step: "01", icon: ArrowDownToLine, title: "Download APK File", desc: `Tap the Download APK button to save 'MovieDock-${releaseData.version}.apk' onto your Android device.` },
                   { step: "02", icon: Unlock, title: "Allow Unknown Sources", desc: "If Android asks for verification, tap Settings → Security and allow installation from your browser." },
                   { step: "03", icon: Sparkles, title: "Install & Stream", desc: "Open the downloaded file from notifications, click Install, and launch MovieDock immediately!" }
                 ].map((s, idx) => {
@@ -489,13 +521,13 @@ export default function App() {
               <div className="bg-white/65 backdrop-blur-2xl border border-white/90 rounded-[36px] p-8 sm:p-11 shadow-[0_20px_50px_-15px_rgba(56,189,248,0.2),inset_0_1px_2px_rgba(255,255,255,0.9)]">
                 <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 border-b border-slate-200/80">
                   <div>
-                    <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900">Loved by 21,700+ Streamers</h3>
+                    <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900">Loved by {releaseData.totalDownloads.toLocaleString()}+ Streamers</h3>
                     <p className="text-sm text-slate-600 mt-1">Verified user community feedback.</p>
                   </div>
                   
                   <div className="flex items-center gap-6">
                     <div className="text-center">
-                      <div className="text-3xl font-black text-sky-500 font-mono">21.7K+</div>
+                      <div className="text-3xl font-black text-sky-500 font-mono">{(releaseData.totalDownloads / 1000).toFixed(1)}K+</div>
                       <div className="text-xs text-slate-500 font-bold">Active Downloads</div>
                     </div>
                     <div className="h-8 w-[1px] bg-slate-300" />
@@ -599,7 +631,6 @@ export default function App() {
       <footer className="mt-20 border-t border-white/90 bg-white/55 backdrop-blur-2xl pt-14 pb-8 px-4">
         <div className="max-w-6xl mx-auto flex flex-col gap-10">
           
-          {/* 3-Column Bento Grid */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-stretch">
             
             {/* Column 1: Brand Info */}
@@ -637,7 +668,7 @@ export default function App() {
                   <BadgeCheck className="w-3.5 h-3.5 text-sky-500" /> Verified Clean Build
                 </span>
                 <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-white/80 border border-white text-[11px] font-semibold text-slate-600 shadow-sm">
-                  v1.2.0 Stable
+                  {releaseData.version} Stable
                 </span>
               </div>
             </div>
@@ -659,7 +690,7 @@ export default function App() {
                     src="/images/signature.png" 
                     alt="Salman Khan Signature" 
                     onError={() => setSigError(true)}
-                    className="h-70 sm:h-24 w-auto max-w-[200px] object-contain drop-shadow-md transition-transform hover:scale-105 duration-200"
+                    className="h-20 sm:h-24 w-auto max-w-[260px] object-contain drop-shadow-md transition-transform hover:scale-105 duration-200"
                   />
                 ) : (
                   <span className="font-serif italic font-extrabold text-3xl text-slate-800 tracking-wide">
