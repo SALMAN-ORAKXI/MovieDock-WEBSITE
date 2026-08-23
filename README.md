@@ -1,5 +1,7 @@
 # MovieDock Launchpad
 
+MovieDock Android APK downloads: 21.7k users on PAL STORE — Current app version: v1.2.0
+
 Act as a Senior UI/UX Designer and Web Developer. Build a high-end, conversion-focused landing page for an Android App named 'MovieDock'.
 
 Visual Identity:

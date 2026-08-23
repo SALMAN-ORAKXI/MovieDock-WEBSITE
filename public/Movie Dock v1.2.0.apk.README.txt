@@ -1,0 +1,15 @@
+MovieDock v1.2.0 APK placeholder
+
+This file is a placeholder indicating where the MovieDock v1.2.0 APK should be uploaded.
+
+How to replace with the real APK:
+1. Build and sign your Android APK (MovieDock-v1.2.0.apk) via your Android build process.
+2. Replace this placeholder file with the actual binary at `public/Movie Dock v1.2.0.apk` (name must match any landing-page links).
+   - On Windows: rename the signed APK to `Movie Dock v1.2.0.apk` and put it in the `public\` folder.
+3. Commit the APK (only if repository hosting allows large files) or upload the APK to an external hosting service (recommended) and update the landing page link to point to the external URL.
+
+Important:
+- Repository hosts (GitHub, GitLab) often limit file sizes; consider using Git LFS or an external CDN / storage (Google Drive, S3, Firebase Hosting) for the ~100 MB APK.
+- Do NOT commit private signing keys or keystore files into the repository.
+
+If you want, I can prepare a small script/instructions to build and sign the APK, or update the landing page "Download" link to point to a remote location instead of embedding the APK in the repo.
