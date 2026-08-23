@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { 
   ArrowDownToLine, 
   ShieldCheck, 
@@ -659,7 +659,7 @@ export default function App() {
                     src="/images/signature.png" 
                     alt="Salman Khan Signature" 
                     onError={() => setSigError(true)}
-                    className="h-20 sm:h-24 w-auto max-w-[260px] object-contain drop-shadow-md transition-transform hover:scale-105 duration-200"
+                    className="h-70 sm:h-24 w-auto max-w-[200px] object-contain drop-shadow-md transition-transform hover:scale-105 duration-200"
                   />
                 ) : (
                   <span className="font-serif italic font-extrabold text-3xl text-slate-800 tracking-wide">
