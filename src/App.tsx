@@ -31,7 +31,12 @@ import {
   Moon,
   ChevronDown,
   Check,
-  Ban
+  Ban,
+  Settings,
+  Download,
+  PlayCircle,
+  Globe,
+  Film
 } from 'lucide-react';
 
 export default function App() {
@@ -43,10 +48,9 @@ export default function App() {
   const [footerLogoError, setFooterLogoError] = useState(false);
   const [heroImg1Error, setHeroImg1Error] = useState(false);
   const [heroImg2Error, setHeroImg2Error] = useState(false);
-  const [sigError, setSigError] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
-  // 🌗 Day & Night Theme State (Default: Dark mode with persistence)
+  // Day & Night Theme State
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
     return (localStorage.getItem('moviedock_theme') as 'dark' | 'light') || 'dark';
   });
@@ -57,7 +61,6 @@ export default function App() {
     localStorage.setItem('moviedock_theme', newTheme);
   };
 
-  // 📈 Base Download Counter Locked at 21.8K+ (Never Resets)
   const BASE_DOWNLOAD_COUNT = 21800;
 
   const [releaseData, setReleaseData] = useState({
@@ -67,7 +70,6 @@ export default function App() {
     totalDownloads: BASE_DOWNLOAD_COUNT
   });
 
-  // ⚡ AUTO-CHECK GITHUB RELEASES API
   useEffect(() => {
     const fetchLatestRelease = async () => {
       try {
@@ -101,7 +103,6 @@ export default function App() {
 
   const handleDownload = () => {
     setDownloading(true);
-    
     const link = document.createElement('a');
     link.href = releaseData.downloadUrl;
     link.download = `MovieDock-${releaseData.version}.apk`;
@@ -133,7 +134,7 @@ export default function App() {
       isDark ? 'bg-[#090d16] text-slate-100' : 'bg-[#f1f5f9] text-slate-800'
     }`}>
       
-      {/* Dynamic Ambient Mesh Glow */}
+      {/* Background Ambient Glow */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
         <div className={`absolute -top-32 left-1/2 -translate-x-1/2 w-[850px] h-[550px] rounded-full blur-[140px] transition-all ${
           isDark ? 'bg-sky-600/15' : 'bg-sky-300/40'
@@ -147,7 +148,7 @@ export default function App() {
       </div>
 
       {/* ========================================================================= */}
-      {/* 1. LIQUID GLASS CAPSULE NAVBAR (WITH DAY/NIGHT SWITCHER) */}
+      {/* NAVBAR */}
       {/* ========================================================================= */}
       <header className="fixed top-0 left-0 right-0 z-50 flex justify-center px-4 py-4 transition-all duration-300">
         <nav className={`w-full max-w-5xl rounded-full px-4 sm:px-6 py-2.5 transition-all duration-300 flex items-center justify-between backdrop-blur-2xl ${
@@ -156,7 +157,6 @@ export default function App() {
             : 'bg-white/60 border border-white/90 shadow-[0_15px_35px_-10px_rgba(56,189,248,0.15),inset_0_1px_2px_rgba(255,255,255,0.9)]'
         } ${scrolled ? 'scale-[0.99] shadow-2xl' : ''}`}>
           
-          {/* Logo with App Icon */}
           <div 
             onClick={() => { setCurrentPage('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} 
             className="flex items-center gap-3 cursor-pointer group"
@@ -193,7 +193,6 @@ export default function App() {
             </div>
           </div>
 
-          {/* Desktop Navigation Links */}
           <div className={`hidden md:flex items-center gap-1 p-1 rounded-full border backdrop-blur-xl ${
             isDark ? 'bg-slate-800/40 border-white/10' : 'bg-slate-200/30 border-white/70 shadow-inner'
           }`}>
@@ -233,7 +232,6 @@ export default function App() {
             </button>
           </div>
 
-          {/* Day / Night Theme Switcher + Download Pill */}
           <div className="hidden md:flex items-center gap-2.5">
             <button
               onClick={toggleTheme}
@@ -256,7 +254,6 @@ export default function App() {
             </button>
           </div>
 
-          {/* Mobile Right Controls */}
           <div className="md:hidden flex items-center gap-2">
             <button
               onClick={toggleTheme}
@@ -278,7 +275,6 @@ export default function App() {
           </div>
         </nav>
 
-        {/* Mobile Dropdown Sheet */}
         {mobileMenuOpen && (
           <div className={`md:hidden absolute top-20 left-4 right-4 backdrop-blur-2xl rounded-3xl p-5 shadow-2xl border flex flex-col gap-2 ${
             isDark ? 'bg-slate-900/95 border-white/10 text-white' : 'bg-white/95 border-white text-slate-800'
@@ -303,7 +299,7 @@ export default function App() {
       </header>
 
       {/* ========================================================================= */}
-      {/* 2. BODY CONTENT */}
+      {/* BODY CONTENT */}
       {/* ========================================================================= */}
       <main className="relative z-10 flex-grow">
         {currentPage === 'home' ? (
@@ -311,7 +307,6 @@ export default function App() {
             {/* HERO SECTION */}
             <section id="download-zone" className="pt-28 md:pt-36 pb-16 px-4 max-w-6xl mx-auto flex flex-col items-center text-center">
               
-              {/* Trust Badge with 21.8K+ Download Counter */}
               <div className={`inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full backdrop-blur-xl border text-xs font-bold shadow-sm mb-7 ${
                 isDark ? 'bg-slate-900/80 border-white/10 text-slate-300' : 'bg-white/70 border-white/90 text-slate-700 shadow-[0_4px_20px_-2px_rgba(56,189,248,0.12)]'
               }`}>
@@ -328,21 +323,18 @@ export default function App() {
                 </span>
               </div>
 
-              {/* Headline */}
               <h1 className={`text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight max-w-4xl leading-[1.12] mb-5 ${
                 isDark ? 'text-white' : 'text-slate-900'
               }`}>
                 Stream Unlimited 4K Cinema on <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-500 via-sky-400 to-cyan-400">Android</span>
               </h1>
 
-              {/* Subtitle */}
               <p className={`text-base sm:text-lg max-w-2xl font-normal leading-relaxed mb-9 ${
                 isDark ? 'text-slate-400' : 'text-slate-600'
               }`}>
                 Experience crystal clear 4K HDR playback, multi-language dual audio, and lightning-fast direct offline downloads to phone storage.
               </p>
 
-              {/* Download CTA Pill */}
               <div className="w-full max-w-xl flex flex-col items-center gap-3.5">
                 <button
                   onClick={handleDownload}
@@ -392,7 +384,6 @@ export default function App() {
                 
                 <div className="absolute inset-0 bg-gradient-to-r from-sky-300/20 via-cyan-200/10 to-blue-300/20 rounded-[80px] blur-3xl -z-10" />
 
-                {/* Screenshot 1 */}
                 <div className="relative w-full max-w-[310px] sm:max-w-[340px]">
                   <div className={`rounded-[44px] p-[8px] border shadow-2xl ${
                     isDark ? 'bg-slate-800 border-white/10' : 'bg-gradient-to-b from-white via-slate-100 to-slate-200 border-white'
@@ -418,7 +409,6 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* Screenshot 2 */}
                 <div className="relative w-full max-w-[310px] sm:max-w-[340px]">
                   <div className={`rounded-[44px] p-[8px] border shadow-2xl ${
                     isDark ? 'bg-slate-800 border-white/10' : 'bg-gradient-to-b from-white via-slate-100 to-slate-200 border-white'
@@ -448,9 +438,7 @@ export default function App() {
 
             </section>
 
-            {/* ========================================================================= */}
-            {/* 3. BENTO FEATURES SHOWCASE */}
-            {/* ========================================================================= */}
+            {/* BENTO FEATURES */}
             <section id="features" className="py-16 px-4 max-w-6xl mx-auto">
               <div className="text-center max-w-2xl mx-auto mb-12">
                 <span className="text-xs font-bold uppercase tracking-widest text-sky-500 bg-sky-500/10 px-3.5 py-1 rounded-full border border-sky-500/20">
@@ -466,7 +454,6 @@ export default function App() {
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 
-                {/* Box 1 */}
                 <div className={`md:col-span-2 backdrop-blur-2xl rounded-[32px] p-7 flex flex-col justify-between border transition-all ${
                   isDark ? 'bg-slate-900/60 border-white/10 hover:border-sky-500/30' : 'bg-white/65 border-white/90 shadow-[0_15px_35px_-10px_rgba(56,189,248,0.12)]'
                 }`}>
@@ -498,7 +485,6 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* Box 2 */}
                 <div className={`md:col-span-1 backdrop-blur-2xl rounded-[32px] p-7 flex flex-col justify-between border transition-all ${
                   isDark ? 'bg-slate-900/60 border-white/10 hover:border-sky-500/30' : 'bg-white/65 border-white/90 shadow-[0_15px_35px_-10px_rgba(56,189,248,0.12)]'
                 }`}>
@@ -524,7 +510,6 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* Box 3 */}
                 <div className={`md:col-span-1 backdrop-blur-2xl rounded-[32px] p-7 flex flex-col justify-between border transition-all ${
                   isDark ? 'bg-slate-900/60 border-white/10 hover:border-sky-500/30' : 'bg-white/65 border-white/90 shadow-[0_15px_35px_-10px_rgba(56,189,248,0.12)]'
                 }`}>
@@ -550,7 +535,6 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* Box 4 */}
                 <div className={`md:col-span-2 backdrop-blur-2xl rounded-[32px] p-7 flex flex-col justify-between border transition-all ${
                   isDark ? 'bg-slate-900/60 border-white/10 hover:border-sky-500/30' : 'bg-white/65 border-white/90 shadow-[0_15px_35px_-10px_rgba(56,189,248,0.12)]'
                 }`}>
@@ -580,9 +564,7 @@ export default function App() {
               </div>
             </section>
 
-            {/* ========================================================================= */}
-            {/* 4. WHY MOVIEDOCK VS OTHERS (COMPARISON TABLE) */}
-            {/* ========================================================================= */}
+            {/* COMPARISON */}
             <section id="comparison" className="py-16 px-4 max-w-5xl mx-auto">
               <div className="text-center max-w-2xl mx-auto mb-12">
                 <span className="text-xs font-bold uppercase tracking-widest text-emerald-500 bg-emerald-500/10 px-3.5 py-1 rounded-full border border-emerald-500/20">
@@ -637,56 +619,147 @@ export default function App() {
               </div>
             </section>
 
-            {/* ========================================================================= */}
-            {/* 5. INSTALL GUIDE */}
-            {/* ========================================================================= */}
+            {/* INSTALL GUIDE */}
             <section id="install-guide" className="py-16 px-4 max-w-6xl mx-auto">
               <div className="text-center max-w-2xl mx-auto mb-12">
                 <span className="text-xs font-bold uppercase tracking-widest text-sky-500 bg-sky-500/10 px-3.5 py-1 rounded-full border border-sky-500/20">
-                  Fast Setup
+                  Visual Setup Guide
                 </span>
                 <h2 className={`text-3xl sm:text-4xl font-extrabold tracking-tight mt-3 ${isDark ? 'text-white' : 'text-slate-900'}`}>
                   How to Install MovieDock on Android
                 </h2>
                 <p className={`text-sm mt-2 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-                  No rooting required. Ready to stream in under 30 seconds.
+                  Follow these 3 simple visual steps to enjoy unlimited 4K streaming.
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {[
-                  { step: "01", icon: ArrowDownToLine, title: "Download APK File", desc: `Tap the Download APK button to save 'MovieDock-${releaseData.version}.apk' onto your Android device.` },
-                  { step: "02", icon: Unlock, title: "Allow Unknown Sources", desc: "If Android asks for verification, tap Settings → Security and allow installation from your browser." },
-                  { step: "03", icon: Sparkles, title: "Install & Stream", desc: "Open the downloaded file from notifications, click Install, and launch MovieDock immediately!" }
-                ].map((s, idx) => {
-                  const Icon = s.icon;
-                  return (
-                    <div key={idx} className={`backdrop-blur-2xl rounded-[32px] p-7 flex flex-col justify-between border hover:scale-[1.01] transition-transform ${
-                      isDark ? 'bg-slate-900/60 border-white/10' : 'bg-white/65 border-white/90 shadow-[0_15px_35px_-10px_rgba(56,189,248,0.12)]'
-                    }`}>
-                      <div className="flex items-center justify-between mb-5">
-                        <span className="text-3xl font-black text-sky-400 font-mono">{s.step}</span>
-                        <div className="w-11 h-11 rounded-2xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400 shadow-sm">
-                          <Icon className="w-5 h-5 stroke-[1.75]" />
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <div className={`rounded-[32px] p-6 border backdrop-blur-2xl flex flex-col justify-between shadow-xl transition-all ${
+                  isDark ? 'bg-slate-900/60 border-white/10' : 'bg-white/70 border-white/90'
+                }`}>
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-3xl font-black text-sky-400 font-mono">01</span>
+                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-sky-500/10 text-sky-400 border border-sky-500/20">Step One</span>
+                    </div>
+                    <h3 className={`text-lg font-bold mb-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>Download APK File</h3>
+                    <p className={`text-xs leading-relaxed mb-6 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                      Tap the download button on our site to save the official package onto your Android device.
+                    </p>
+                  </div>
+
+                  <div className="rounded-2xl bg-slate-950 p-4 border border-white/10 text-left text-white shadow-inner">
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="w-2.5 h-2.5 rounded-full bg-red-500" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-yellow-500" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-green-500" />
+                      <span className="text-[10px] text-slate-400 ml-1">Chrome Browser</span>
+                    </div>
+                    <div className="p-3 rounded-xl bg-sky-500/20 border border-sky-500/40 flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Download className="w-4 h-4 text-sky-400 animate-bounce" />
+                        <div>
+                          <div className="text-[11px] font-bold text-white">MovieDock-v1.2.0.apk</div>
+                          <div className="text-[9px] text-sky-300">101 MB • Downloading...</div>
                         </div>
                       </div>
+                      <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/20 px-2 py-0.5 rounded">100%</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className={`rounded-[32px] p-6 border backdrop-blur-2xl flex flex-col justify-between shadow-xl transition-all ${
+                  isDark ? 'bg-slate-900/60 border-white/10' : 'bg-white/70 border-white/90'
+                }`}>
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-3xl font-black text-sky-400 font-mono">02</span>
+                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-sky-500/10 text-sky-400 border border-sky-500/20">Step Two</span>
+                    </div>
+                    <h3 className={`text-lg font-bold mb-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>Allow Unknown Sources</h3>
+                    <p className={`text-xs leading-relaxed mb-6 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                      If Android prompts security verification, toggle 'Allow installation from this source'.
+                    </p>
+                  </div>
+
+                  <div className="rounded-2xl bg-slate-950 p-4 border border-white/10 text-left text-white shadow-inner">
+                    <div className="flex items-center gap-2 mb-3">
+                      <Settings className="w-3.5 h-3.5 text-slate-400 animate-spin" />
+                      <span className="text-[10px] text-slate-400">Android Security Settings</span>
+                    </div>
+                    <div className="p-3 rounded-xl bg-slate-900 border border-white/10 flex items-center justify-between">
                       <div>
-                        <h3 className={`text-lg font-bold mb-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>{s.title}</h3>
-                        <p className={`text-sm leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>{s.desc}</p>
+                        <div className="text-[11px] font-bold text-white">Allow from this source</div>
+                        <div className="text-[9px] text-slate-400">Required for APK side-loading</div>
                       </div>
-                      <div className="mt-6 pt-4 border-t border-white/10 flex items-center gap-2 text-xs font-bold text-emerald-400">
-                        <CheckCircle2 className="w-4 h-4 stroke-[2]" />
-                        <span>Verified Android Package</span>
+                      <div className="w-10 h-6 bg-sky-500 rounded-full p-1 flex items-center justify-end shadow-sm">
+                        <div className="w-4 h-4 rounded-full bg-white shadow" />
                       </div>
                     </div>
-                  );
-                })}
+                  </div>
+                </div>
+
+                <div className={`rounded-[32px] p-6 border backdrop-blur-2xl flex flex-col justify-between shadow-xl transition-all ${
+                  isDark ? 'bg-slate-900/60 border-white/10' : 'bg-white/70 border-white/90'
+                }`}>
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-3xl font-black text-sky-400 font-mono">03</span>
+                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-sky-500/10 text-sky-400 border border-sky-500/20">Step Three</span>
+                    </div>
+                    <h3 className={`text-lg font-bold mb-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>Install & Enjoy 4K</h3>
+                    <p className={`text-xs leading-relaxed mb-6 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                      Open the finished download file, tap Install, and launch MovieDock instantly!
+                    </p>
+                  </div>
+
+                  <div className="rounded-2xl bg-slate-950 p-4 border border-white/10 text-left text-white shadow-inner">
+                    <div className="flex items-center gap-2 mb-3">
+                      <PlayCircle className="w-3.5 h-3.5 text-emerald-400" />
+                      <span className="text-[10px] text-slate-400">MovieDock Ready</span>
+                    </div>
+                    <div className="p-3 rounded-xl bg-gradient-to-r from-sky-600 to-cyan-500 text-white flex items-center justify-between shadow-md">
+                      <div className="text-[11px] font-black">Launch MovieDock 4K</div>
+                      <span className="text-[10px] bg-black/30 px-2 py-0.5 rounded font-bold">READY</span>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </section>
 
             {/* ========================================================================= */}
-            {/* 6. FREQUENTLY ASKED QUESTIONS (FAQ) */}
+            {/* 🌟 LONG-FORM SEO CONTENT SECTION (To rank #1 on Google Search) */}
             {/* ========================================================================= */}
+            <section className={`py-16 px-6 max-w-5xl mx-auto rounded-3xl border my-12 backdrop-blur-2xl ${
+              isDark ? 'bg-slate-900/40 border-white/10 text-slate-300' : 'bg-white/70 border-white/90 text-slate-700 shadow-soft'
+            }`}>
+              <div className="max-w-3xl mx-auto space-y-6 text-sm leading-relaxed">
+                <div className="flex items-center gap-2 text-sky-400 font-bold text-xs uppercase tracking-widest">
+                  <Globe className="w-4 h-4" /> Official Android Streaming & Media Portal
+                </div>
+                <h2 className={`text-2xl sm:text-3xl font-extrabold tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                  About MovieDock — The Ultimate 4K Streaming & Offline Downloader for Android
+                </h2>
+                <p>
+                  Welcome to the official download portal for <strong>MovieDock</strong>, the premier Android media streaming and offline downloading application designed for cinephiles, anime enthusiasts, and TV series bingers worldwide. In an era where streaming services require expensive monthly subscriptions and restrict offline caching, MovieDock provides a lightning-fast, ad-free alternative optimized for mobile devices, tablets, and Android TVs.
+                </p>
+                <h3 className={`text-xl font-bold pt-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                  Why Download MovieDock APK?
+                </h3>
+                <p>
+                  Powered by a custom native MPV/MediaKit hardware acceleration engine, MovieDock delivers stutter-free 4K Ultra HD playback even on budget smartphones. Whether you are searching for Hollywood blockbusters, Bollywood releases, K-Dramas, or trending Japanese anime, our categorized hub indexes over 50,000+ verified titles updated daily.
+                </p>
+                <ul className="list-disc pl-5 space-y-2 text-xs sm:text-sm">
+                  <li><strong>Resumable Multi-Threaded Downloads:</strong> Save movies and full series directly to your phone's internal storage or external SD card with pause/resume support.</li>
+                  <li><strong>Dual Audio & Subtitles:</strong> Toggle seamlessly between multiple dubbed audio tracks and synced subtitles in English, Hindi, Urdu, Spanish, and Japanese.</li>
+                  <li><strong>Zero Subscription Walls:</strong> 100% free forever with no forced user registration or personal data collection.</li>
+                </ul>
+              </div>
+            </section>
+
+            {/* FAQ */}
             <section className="py-16 px-4 max-w-4xl mx-auto">
               <div className="text-center max-w-2xl mx-auto mb-12">
                 <span className="text-xs font-bold uppercase tracking-widest text-sky-500 bg-sky-500/10 px-3.5 py-1 rounded-full border border-sky-500/20">
@@ -784,7 +857,7 @@ export default function App() {
       </main>
 
       {/* ========================================================================= */}
-      {/* 7. ULTRA-PREMIUM LIQUID GLASS BENTO FOOTER */}
+      {/* FOOTER (Signature Removed & Clean Corporate Style) */}
       {/* ========================================================================= */}
       <footer className={`mt-20 border-t backdrop-blur-2xl pt-14 pb-8 px-4 ${
         isDark ? 'bg-slate-950/80 border-white/10 text-slate-300' : 'bg-white/55 border-white/90 text-slate-700'
@@ -793,8 +866,7 @@ export default function App() {
           
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-stretch">
             
-            {/* Column 1: Brand Info */}
-            <div className="md:col-span-5 flex flex-col justify-between gap-4">
+            <div className="md:col-span-7 flex flex-col justify-between gap-4">
               <div className="flex flex-col gap-3.5">
                 <div className="flex items-center gap-3">
                   <div className={`w-11 h-11 rounded-2xl p-1 shadow-sm flex items-center justify-center overflow-hidden border ${
@@ -808,7 +880,7 @@ export default function App() {
                         className="w-full h-full object-contain rounded-xl"
                       />
                     ) : (
-                      <Tv className="w-6 h-6 text-sky-400 stroke-[2]" />
+                      <Tv className="w-6 h-6 text-sky-500 stroke-[2]" />
                     )}
                   </div>
                   <div>
@@ -820,7 +892,7 @@ export default function App() {
                   </div>
                 </div>
 
-                <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
+                <p className="text-xs text-slate-400 leading-relaxed max-w-md">
                   Next-generation mobile streaming portal and offline downloader. Built for ultra-fast, seamless entertainment on all Android devices.
                 </p>
               </div>
@@ -839,48 +911,10 @@ export default function App() {
               </div>
             </div>
 
-            {/* Column 2: PROMINENT LARGE SIGNATURE TRUST CARD */}
-            <div className={`md:col-span-4 rounded-3xl p-5 border flex flex-col justify-between shadow-lg ${
-              isDark ? 'bg-slate-900/80 border-white/10' : 'bg-white/85 border-white shadow-[0_10px_25px_-5px_rgba(56,189,248,0.12)]'
-            }`}>
-              
-              <div className="flex items-center justify-between pb-2 border-b border-white/5">
-                <span className="text-[11px] font-black uppercase tracking-wider text-slate-400">Founder & Core Developer</span>
-                <div className="flex items-center gap-1 text-[11px] font-bold text-sky-400 bg-sky-500/10 px-2 py-0.5 rounded-md border border-sky-500/20">
-                  <CheckCircle2 className="w-3 h-3 stroke-[2.5]" /> Verified
-                </div>
-              </div>
-
-              {/* LARGE SIGNATURE DISPLAY */}
-              <div className={`my-2 flex flex-col items-center justify-center p-3 rounded-2xl border min-h-[96px] ${
-                isDark ? 'bg-slate-950/60 border-white/5' : 'bg-gradient-to-b from-slate-50 via-white to-sky-50/40 border-slate-100/80'
-              }`}>
-                {!sigError ? (
-                  <img 
-                    src="/images/signature.png" 
-                    alt="Salman Khan Signature" 
-                    onError={() => setSigError(true)}
-                    className="h-20 sm:h-24 w-auto max-w-[260px] object-contain drop-shadow-md transition-transform hover:scale-105 duration-200"
-                  />
-                ) : (
-                  <span className="font-serif italic font-extrabold text-3xl text-sky-400 tracking-wide">
-                    Salman Khan
-                  </span>
-                )}
-              </div>
-
-              <div className="flex items-center justify-between text-xs text-slate-400 pt-1">
-                <span className={`font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>Salman Khan</span>
-                <span className="text-[11px] text-slate-500 font-medium">MovieDock Project Lead</span>
-              </div>
-            </div>
-
-            {/* Column 3: PRIVATE WHATSAPP SUPPORT & LINKS */}
-            <div className="md:col-span-3 flex flex-col justify-between gap-3">
+            <div className="md:col-span-5 flex flex-col justify-between gap-3">
               <div>
                 <div className="text-xs font-black uppercase tracking-wider text-slate-400 mb-2">Live Support</div>
                 
-                {/* WhatsApp Button (Hidden Phone Number) */}
                 <a
                   href="https://wa.me/923275176283?text=Hi%20MovieDock%20Support,%20I%20need%20help%20with%20the%20APK"
                   target="_blank"
@@ -903,7 +937,6 @@ export default function App() {
                 </a>
               </div>
 
-              {/* Fast Quick Links */}
               <div className="flex flex-col gap-1.5 text-xs font-semibold text-slate-400">
                 <button 
                   onClick={() => { setCurrentPage('privacy'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
@@ -925,7 +958,6 @@ export default function App() {
 
           </div>
 
-          {/* DMCA Disclaimer */}
           <div className={`p-4 rounded-2xl border text-[11px] leading-relaxed flex items-start gap-3 shadow-sm ${
             isDark ? 'bg-slate-900/60 border-white/10 text-slate-400' : 'bg-white/60 border-white text-slate-500'
           }`}>
@@ -935,7 +967,6 @@ export default function App() {
             </span>
           </div>
 
-          {/* Bottom Copyright Line */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400 pt-4 border-t border-white/10">
             <div className="flex items-center gap-1.5">
               <span>Crafted with</span>
