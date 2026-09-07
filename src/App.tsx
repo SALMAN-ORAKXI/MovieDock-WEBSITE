@@ -128,7 +128,7 @@ export default function App() {
       let loaded = 0;
 
       const reader = response.body?.getReader();
-      const chunks: Uint8Array[] = [];
+      const chunks: BlobPart[] = [];
 
       if (reader) {
         while (true) {
