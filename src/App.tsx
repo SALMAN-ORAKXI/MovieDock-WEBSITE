@@ -36,19 +36,26 @@ import {
   Download,
   PlayCircle,
   Globe,
-  Film
+  Share2,
+  CheckCircle
 } from 'lucide-react';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState<'home' | 'privacy'>('home');
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [downloading, setDownloading] = useState(false);
+  
+  // Download Modal & Progress State
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [downloadProgress, setDownloadProgress] = useState(0);
+  const [downloadStatus, setDownloadStatus] = useState('Initializing secure download...');
+
   const [logoError, setLogoError] = useState(false);
   const [footerLogoError, setFooterLogoError] = useState(false);
   const [heroImg1Error, setHeroImg1Error] = useState(false);
   const [heroImg2Error, setHeroImg2Error] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [shareToast, setShareToast] = useState(false);
 
   // Day & Night Theme State
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
@@ -101,18 +108,89 @@ export default function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleDownload = () => {
-    setDownloading(true);
-    const link = document.createElement('a');
-    link.href = releaseData.downloadUrl;
-    link.download = `MovieDock-${releaseData.version}.apk`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  // 🚀 ROBUST STUCK-FREE STREAMING DOWNLOAD HANDLER WITH ANIMATED PROGRESS
+  const handleDownload = async () => {
+    if (isDownloading) return;
+    setIsDownloading(true);
+    setDownloadProgress(0);
+    setDownloadStatus('Connecting to secure GitHub CDN...');
 
-    setTimeout(() => {
-      setDownloading(false);
-    }, 2000);
+    try {
+      // Simulate connection delay
+      await new Promise(r => setTimeout(r, 600));
+      setDownloadStatus('Downloading MovieDock APK...');
+
+      const response = await fetch(releaseData.downloadUrl);
+      if (!response.ok) throw new Error('Network response was not ok');
+
+      const contentLength = response.headers.get('content-length');
+      const total = contentLength ? parseInt(contentLength, 10) : 106500000; // ~101.5 MB fallback
+      let loaded = 0;
+
+      const reader = response.body?.getReader();
+      const chunks: Uint8Array[] = [];
+
+      if (reader) {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          chunks.push(value);
+          loaded += value.length;
+          const percent = Math.min(Math.round((loaded / total) * 100), 99);
+          setDownloadProgress(percent);
+          setDownloadStatus(`Downloading... ${percent}% (${(loaded / (1024 * 1024)).toFixed(1)} MB)`);
+        }
+      }
+
+      setDownloadProgress(100);
+      setDownloadStatus('Download complete! Saving file...');
+
+      const blob = new Blob(chunks, { type: 'application/vnd.android.package-archive' });
+      const blobUrl = window.URL.createObjectURL(blob);
+      
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = `MovieDock-${releaseData.version}.apk`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(blobUrl);
+
+      setTimeout(() => {
+        setIsDownloading(false);
+        setDownloadStatus('Ready');
+      }, 1500);
+
+    } catch (err) {
+      console.error('Download stream error, falling back to direct trigger:', err);
+      setDownloadStatus('Redirecting to direct mirror...');
+      setDownloadProgress(100);
+
+      const fallbackLink = document.createElement('a');
+      fallbackLink.href = releaseData.downloadUrl;
+      fallbackLink.download = `MovieDock-${releaseData.version}.apk`;
+      document.body.appendChild(fallbackLink);
+      fallbackLink.click();
+      document.body.removeChild(fallbackLink);
+
+      setTimeout(() => {
+        setIsDownloading(false);
+      }, 2000);
+    }
+  };
+
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: 'MovieDock - 4K Streaming & Downloader',
+        text: 'Download MovieDock APK for Android and stream unlimited 4K movies & anime!',
+        url: window.location.href,
+      }).catch(() => {});
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      setShareToast(true);
+      setTimeout(() => setShareToast(false), 2500);
+    }
   };
 
   const scrollToDownload = () => {
@@ -335,10 +413,11 @@ export default function App() {
                 Experience crystal clear 4K HDR playback, multi-language dual audio, and lightning-fast direct offline downloads to phone storage.
               </p>
 
+              {/* Download CTA Pill */}
               <div className="w-full max-w-xl flex flex-col items-center gap-3.5">
                 <button
                   onClick={handleDownload}
-                  disabled={downloading}
+                  disabled={isDownloading}
                   className="group w-full max-w-md relative overflow-hidden rounded-full bg-gradient-to-r from-sky-400 via-sky-500 to-sky-400 p-[1.5px] shadow-[0_15px_35px_-6px_rgba(14,165,233,0.45)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
                 >
                   <div className={`flex items-center justify-between px-6 py-3.5 rounded-full backdrop-blur-2xl transition-all ${
@@ -347,11 +426,11 @@ export default function App() {
                     
                     <div className="flex items-center gap-3.5 text-left">
                       <div className="w-10 h-10 rounded-full bg-gradient-to-b from-sky-400 to-sky-500 text-white flex items-center justify-center shadow-md shadow-sky-400/40">
-                        <ArrowDownToLine className={`w-5 h-5 stroke-[2] ${downloading ? 'animate-bounce' : ''}`} />
+                        <ArrowDownToLine className={`w-5 h-5 stroke-[2] ${isDownloading ? 'animate-bounce' : ''}`} />
                       </div>
                       <div>
                         <div className={`text-sm sm:text-base font-extrabold tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                          {downloading ? 'Starting Direct Download...' : 'Download MovieDock APK'}
+                          {isDownloading ? 'Downloading...' : 'Download MovieDock APK'}
                         </div>
                         <div className="text-[11px] text-sky-400 font-semibold">
                           {releaseData.version} • {releaseData.size} • Android 8.0+
@@ -366,18 +445,39 @@ export default function App() {
                   </div>
                 </button>
 
-                <button
-                  onClick={handleDownload}
-                  className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full border text-xs font-bold transition-all ${
-                    isDark 
-                      ? 'bg-slate-900/60 hover:bg-slate-900 border-white/10 text-slate-300' 
-                      : 'bg-white/60 hover:bg-white/90 border-white/90 text-slate-600 shadow-sm'
-                  }`}
-                >
-                  <Smartphone className="w-3.5 h-3.5 text-sky-500 stroke-[2]" />
-                  <span>Direct GitHub CDN Mirror ({releaseData.size})</span>
-                </button>
+                <div className="flex items-center gap-3 w-full max-w-md">
+                  <button
+                    onClick={handleDownload}
+                    className={`flex-1 py-2.5 rounded-full border text-xs font-bold transition-all flex items-center justify-center gap-2 ${
+                      isDark 
+                        ? 'bg-slate-900/60 hover:bg-slate-900 border-white/10 text-slate-300' 
+                        : 'bg-white/60 hover:bg-white/90 border-white/90 text-slate-600 shadow-sm'
+                    }`}
+                  >
+                    <Smartphone className="w-3.5 h-3.5 text-sky-500 stroke-[2]" />
+                    <span>Direct CDN Mirror</span>
+                  </button>
+
+                  <button
+                    onClick={handleShare}
+                    className={`px-5 py-2.5 rounded-full border text-xs font-bold transition-all flex items-center gap-1.5 ${
+                      isDark 
+                        ? 'bg-slate-900/60 hover:bg-slate-900 border-white/10 text-sky-400' 
+                        : 'bg-white/60 hover:bg-white/90 border-white/90 text-sky-600 shadow-sm'
+                    }`}
+                  >
+                    <Share2 className="w-3.5 h-3.5 stroke-[2]" />
+                    <span>Share App</span>
+                  </button>
+                </div>
               </div>
+
+              {/* Share Toast */}
+              {shareToast && (
+                <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white px-5 py-2.5 rounded-full shadow-2xl text-xs font-bold flex items-center gap-2 border border-white/20 animate-in fade-in slide-in-from-bottom-4">
+                  <CheckCircle className="w-4 h-4 text-emerald-400" /> Link copied to clipboard! Share with friends.
+                </div>
+              )}
 
               {/* 📱 2 SCREENSHOTS SHOWCASE */}
               <div className="relative mt-16 w-full max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-center gap-8 lg:gap-12">
@@ -729,9 +829,7 @@ export default function App() {
               </div>
             </section>
 
-            {/* ========================================================================= */}
-            {/* 🌟 LONG-FORM SEO CONTENT SECTION (To rank #1 on Google Search) */}
-            {/* ========================================================================= */}
+            {/* SEO CONTENT */}
             <section className={`py-16 px-6 max-w-5xl mx-auto rounded-3xl border my-12 backdrop-blur-2xl ${
               isDark ? 'bg-slate-900/40 border-white/10 text-slate-300' : 'bg-white/70 border-white/90 text-slate-700 shadow-soft'
             }`}>
@@ -745,17 +843,6 @@ export default function App() {
                 <p>
                   Welcome to the official download portal for <strong>MovieDock</strong>, the premier Android media streaming and offline downloading application designed for cinephiles, anime enthusiasts, and TV series bingers worldwide. In an era where streaming services require expensive monthly subscriptions and restrict offline caching, MovieDock provides a lightning-fast, ad-free alternative optimized for mobile devices, tablets, and Android TVs.
                 </p>
-                <h3 className={`text-xl font-bold pt-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                  Why Download MovieDock APK?
-                </h3>
-                <p>
-                  Powered by a custom native MPV/MediaKit hardware acceleration engine, MovieDock delivers stutter-free 4K Ultra HD playback even on budget smartphones. Whether you are searching for Hollywood blockbusters, Bollywood releases, K-Dramas, or trending Japanese anime, our categorized hub indexes over 50,000+ verified titles updated daily.
-                </p>
-                <ul className="list-disc pl-5 space-y-2 text-xs sm:text-sm">
-                  <li><strong>Resumable Multi-Threaded Downloads:</strong> Save movies and full series directly to your phone's internal storage or external SD card with pause/resume support.</li>
-                  <li><strong>Dual Audio & Subtitles:</strong> Toggle seamlessly between multiple dubbed audio tracks and synced subtitles in English, Hindi, Urdu, Spanish, and Japanese.</li>
-                  <li><strong>Zero Subscription Walls:</strong> 100% free forever with no forced user registration or personal data collection.</li>
-                </ul>
               </div>
             </section>
 
@@ -857,7 +944,7 @@ export default function App() {
       </main>
 
       {/* ========================================================================= */}
-      {/* FOOTER (Signature Removed & Clean Corporate Style) */}
+      {/* FOOTER (With Share / Support Us & Clean Style) */}
       {/* ========================================================================= */}
       <footer className={`mt-20 border-t backdrop-blur-2xl pt-14 pb-8 px-4 ${
         isDark ? 'bg-slate-950/80 border-white/10 text-slate-300' : 'bg-white/55 border-white/90 text-slate-700'
@@ -913,28 +1000,33 @@ export default function App() {
 
             <div className="md:col-span-5 flex flex-col justify-between gap-3">
               <div>
-                <div className="text-xs font-black uppercase tracking-wider text-slate-400 mb-2">Live Support</div>
+                <div className="text-xs font-black uppercase tracking-wider text-slate-400 mb-2">Support Us & Share</div>
                 
-                <a
-                  href="https://wa.me/923275176283?text=Hi%20MovieDock%20Support,%20I%20need%20help%20with%20the%20APK"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group w-full flex items-center justify-between px-4 py-3 rounded-2xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 transition-all shadow-sm"
-                >
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-xl bg-emerald-500 text-white flex items-center justify-center shadow-sm">
-                      <MessageCircle className="w-4 h-4 stroke-[2]" />
+                <div className="flex items-center gap-2">
+                  <a
+                    href="https://wa.me/923275176283?text=Hi%20MovieDock%20Support,%20I%20need%20help%20with%20the%20APK"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 flex items-center justify-between px-4 py-3 rounded-2xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 transition-all shadow-sm"
+                  >
+                    <div className="flex items-center gap-2">
+                      <MessageCircle className="w-4 h-4 text-emerald-400 stroke-[2]" />
+                      <span className="text-xs font-bold text-white">WhatsApp</span>
                     </div>
-                    <div className="text-left">
-                      <div className="text-xs font-bold text-white">WhatsApp Support</div>
-                      <div className="text-[10px] text-emerald-400 font-semibold flex items-center gap-1">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-                        Direct 24/7 Chat
-                      </div>
+                    <ArrowUpRight className="w-4 h-4 text-emerald-400" />
+                  </a>
+
+                  <button
+                    onClick={handleShare}
+                    className="flex-1 flex items-center justify-between px-4 py-3 rounded-2xl bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/30 text-sky-400 transition-all shadow-sm"
+                  >
+                    <div className="flex items-center gap-2">
+                      <Share2 className="w-4 h-4 text-sky-400 stroke-[2]" />
+                      <span className="text-xs font-bold text-white">Share App</span>
                     </div>
-                  </div>
-                  <ArrowUpRight className="w-4 h-4 text-emerald-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                </a>
+                    <Share2 className="w-3.5 h-3.5 text-sky-400" />
+                  </button>
+                </div>
               </div>
 
               <div className="flex flex-col gap-1.5 text-xs font-semibold text-slate-400">
