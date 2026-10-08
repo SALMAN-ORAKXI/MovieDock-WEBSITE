@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   ArrowDownToLine, 
   ShieldCheck, 
@@ -6,7 +6,7 @@ import {
   Menu, 
   X, 
   Compass, 
-  HelpCircle,
+  HelpCircle, 
   Star, 
   Smartphone, 
   Flame, 
@@ -26,20 +26,21 @@ import {
   FileText, 
   Tv, 
   BadgeCheck, 
-  ArrowUpRight,
-  ChevronDown,
-  Check,
-  Ban,
-  Settings,
-  Download,
-  PlayCircle,
-  Globe,
-  Share2,
-  CheckCircle,
-  Video,
-  Award,
-  MapPin,
-  Trophy
+  ArrowUpRight, 
+  ChevronDown, 
+  Check, 
+  Ban, 
+  Settings, 
+  Download, 
+  PlayCircle, 
+  Globe, 
+  Share2, 
+  CheckCircle, 
+  Video, 
+  Award, 
+  MapPin, 
+  Trophy,
+  Laptop
 } from 'lucide-react';
 
 export default function App() {
@@ -58,6 +59,10 @@ export default function App() {
   const [heroImg2Error, setHeroImg2Error] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [shareToast, setShareToast] = useState(false);
+
+  // Official Store & Web Links
+  const MICROSOFT_STORE_URL = 'https://apps.microsoft.com/detail/9PBBQQMT0958?hl=en-us&gl=US&ocid=pdpshare';
+  const WEB_APP_URL = 'https://app.moviedock.space';
 
   // Live Animated Download Counter starting at 22,100+
   const [liveDownloads, setLiveDownloads] = useState(22100);
@@ -257,33 +262,48 @@ export default function App() {
           <div className="hidden md:flex items-center gap-1 p-1 rounded-full border bg-slate-200/50 border-white/80 backdrop-blur-2xl shadow-inner">
             <button 
               onClick={() => { setCurrentPage('home'); setTimeout(() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' }), 50); }}
-              className="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold text-slate-700 hover:text-rose-600 hover:bg-white/90 transition-all"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold text-slate-700 hover:text-rose-600 hover:bg-white/90 transition-all"
             >
               <Compass className="w-3.5 h-3.5 stroke-[2]" /> Features
             </button>
+
+            {/* 🌐 New Web Stream Nav Link */}
+            <a
+              href={WEB_APP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold text-rose-600 hover:bg-white/90 transition-all"
+            >
+              <Globe className="w-3.5 h-3.5 stroke-[2]" /> Web Stream
+              <ArrowUpRight className="w-3 h-3 -ml-0.5" />
+            </a>
+
             <button 
               onClick={() => { setCurrentPage('creator'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
                 currentPage === 'creator' ? 'bg-rose-500 text-white shadow-md shadow-rose-500/30' : 'text-slate-700 hover:text-rose-600 hover:bg-white/90'
               }`}
             >
               <Award className="w-3.5 h-3.5 stroke-[2]" /> About Creator
             </button>
+
             <button 
               onClick={() => { setCurrentPage('home'); setTimeout(() => document.getElementById('comparison')?.scrollIntoView({ behavior: 'smooth' }), 50); }}
-              className="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold text-slate-700 hover:text-rose-600 hover:bg-white/90 transition-all"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold text-slate-700 hover:text-rose-600 hover:bg-white/90 transition-all"
             >
               <Sparkles className="w-3.5 h-3.5 stroke-[2]" /> Why MovieDock?
             </button>
+
             <button 
               onClick={() => { setCurrentPage('home'); setTimeout(() => document.getElementById('install-guide')?.scrollIntoView({ behavior: 'smooth' }), 50); }}
-              className="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold text-slate-700 hover:text-rose-600 hover:bg-white/90 transition-all"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold text-slate-700 hover:text-rose-600 hover:bg-white/90 transition-all"
             >
               <HelpCircle className="w-3.5 h-3.5 stroke-[2]" /> Install
             </button>
+
             <button 
               onClick={() => { setCurrentPage('privacy'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
                 currentPage === 'privacy' ? 'bg-rose-500 text-white shadow-md shadow-rose-500/30' : 'text-slate-700 hover:text-rose-600 hover:bg-white/90'
               }`}
             >
@@ -313,10 +333,28 @@ export default function App() {
 
         {mobileMenuOpen && (
           <div className="md:hidden absolute top-20 left-4 right-4 bg-white/95 backdrop-blur-2xl rounded-3xl p-5 shadow-2xl border border-white text-slate-800 flex flex-col gap-2">
+            <a 
+              href={WEB_APP_URL} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="flex items-center justify-between font-bold px-4 py-2.5 rounded-2xl bg-rose-50 text-rose-600"
+            >
+              <span className="flex items-center gap-2"><Globe className="w-4 h-4" /> Stream Online (Web App)</span>
+              <ArrowUpRight className="w-4 h-4" />
+            </a>
+            <a 
+              href={MICROSOFT_STORE_URL} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="flex items-center justify-between font-bold px-4 py-2.5 rounded-2xl bg-slate-100 text-slate-800"
+            >
+              <span className="flex items-center gap-2"><Laptop className="w-4 h-4 text-blue-500" /> Microsoft Store (PC)</span>
+              <ArrowUpRight className="w-4 h-4" />
+            </a>
             <button onClick={() => { setCurrentPage('home'); setMobileMenuOpen(false); setTimeout(() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' }), 50); }} className="flex items-center gap-2.5 text-left font-bold px-4 py-2.5 rounded-2xl hover:bg-rose-50">
               <Compass className="w-4 h-4 text-rose-500 stroke-[2]" /> Features
             </button>
-            <button onClick={() => { setCurrentPage('creator'); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="flex items-center gap-2.5 text-left font-bold px-4 py-2.5 rounded-2xl hover:bg-rose-50">
+            <button onClick={() => { setCurrentPage('creator'); setMobileMenuOpen(false); }} className="flex items-center gap-2.5 text-left font-bold px-4 py-2.5 rounded-2xl hover:bg-rose-50">
               <Award className="w-4 h-4 text-rose-500 stroke-[2]" /> About Creator
             </button>
             <button onClick={() => { setCurrentPage('home'); setMobileMenuOpen(false); setTimeout(() => document.getElementById('comparison')?.scrollIntoView({ behavior: 'smooth' }), 50); }} className="flex items-center gap-2.5 text-left font-bold px-4 py-2.5 rounded-2xl hover:bg-rose-50">
@@ -366,8 +404,10 @@ export default function App() {
                 Experience crystal clear 4K HDR playback, multi-language dual audio, and lightning-fast direct offline downloads to phone storage.
               </p>
 
-              {/* Download CTA Pill */}
+              {/* Download CTA Area */}
               <div className="w-full max-w-xl flex flex-col items-center gap-3.5">
+                
+                {/* Main APK Button */}
                 <button
                   onClick={handleDownload}
                   disabled={isDownloading}
@@ -381,10 +421,10 @@ export default function App() {
                       </div>
                       <div>
                         <div className="text-sm sm:text-base font-extrabold tracking-tight text-slate-900">
-                          {isDownloading ? 'Downloading...' : 'Download MovieDock APK'}
+                          {isDownloading ? 'Starting Download...' : 'Download MovieDock APK'}
                         </div>
                         <div className="text-[11px] text-rose-500 font-semibold">
-                          {releaseData.version} • 101.5 MB • Android 8.0+
+                          {releaseData.version} • {releaseData.size} • Android 8.0+
                         </div>
                       </div>
                     </div>
@@ -396,23 +436,69 @@ export default function App() {
                   </div>
                 </button>
 
+                {/* 🪟 Microsoft Store & 🌐 Web App Buttons */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-md">
+                  
+                  {/* Microsoft Store */}
+                  <a
+                    href={MICROSOFT_STORE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="py-3 px-4 rounded-2xl border text-xs font-bold transition-all flex items-center justify-between group shadow-sm bg-white hover:bg-slate-50 border-slate-200 text-slate-800 hover:scale-[1.02]"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <div className="grid grid-cols-2 gap-0.5 w-3.5 h-3.5">
+                        <div className="bg-[#f25022] rounded-[1px]" />
+                        <div className="bg-[#7fba00] rounded-[1px]" />
+                        <div className="bg-[#00a4ef] rounded-[1px]" />
+                        <div className="bg-[#ffb900] rounded-[1px]" />
+                      </div>
+                      <div className="text-left">
+                        <div className="text-[10px] text-slate-400 font-medium -mb-0.5">Windows PC</div>
+                        <div className="text-xs font-extrabold">Microsoft Store</div>
+                      </div>
+                    </div>
+                    <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  </a>
+
+                  {/* Web App */}
+                  <a
+                    href={WEB_APP_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="py-3 px-4 rounded-2xl border text-xs font-bold transition-all flex items-center justify-between group shadow-sm bg-rose-50 hover:bg-rose-100/80 border-rose-200 text-rose-700 hover:scale-[1.02]"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <Globe className="w-4 h-4 text-rose-500" />
+                      <div className="text-left">
+                        <div className="text-[10px] text-rose-400 font-medium -mb-0.5">Watch in Browser</div>
+                        <div className="text-xs font-extrabold">Stream Web App</div>
+                      </div>
+                    </div>
+                    <ArrowUpRight className="w-4 h-4 text-rose-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  </a>
+
+                </div>
+
+                {/* Direct Mirror & Share App */}
                 <div className="flex items-center gap-3 w-full max-w-md">
                   <button
                     onClick={handleDownload}
-                    className="flex-1 py-2.5 rounded-full border text-xs font-bold transition-all flex items-center justify-center gap-2 bg-white/80 hover:bg-white border-white/90 text-slate-700 shadow-sm"
+                    className="flex-1 py-2.5 rounded-full border text-xs font-bold transition-all flex items-center justify-center gap-2 bg-white/80 hover:bg-white border-white/95 text-slate-700 shadow-sm"
                   >
-                    <Smartphone className="w-3.5 h-3.5 text-rose-500 stroke-[2]" />
+                    <Smartphone className="w-3.5 h-3.5 text-rose-500" />
                     <span>Direct CDN Mirror</span>
                   </button>
 
                   <button
                     onClick={handleShare}
-                    className="px-5 py-2.5 rounded-full border text-xs font-bold transition-all flex items-center gap-1.5 bg-white/80 hover:bg-white border-white/90 text-rose-600 shadow-sm"
+                    className="px-5 py-2.5 rounded-full border text-xs font-bold transition-all flex items-center gap-1.5 bg-white/80 hover:bg-white border-white/95 text-rose-600 shadow-sm"
                   >
                     <Share2 className="w-3.5 h-3.5 stroke-[2]" />
                     <span>Share App</span>
                   </button>
                 </div>
+
               </div>
 
               {/* DOWNLOAD PROGRESS MODAL */}
@@ -433,7 +519,7 @@ export default function App() {
                     </div>
                     <div className="flex justify-between text-xs font-mono font-bold text-rose-600">
                       <span>{downloadProgress}% Completed</span>
-                      <span>101.5 MB</span>
+                      <span>{releaseData.size}</span>
                     </div>
                   </div>
                 </div>
@@ -510,7 +596,7 @@ export default function App() {
                   Engineered for Ultra-Fast 4K Streaming
                 </h2>
                 <p className="text-sm mt-2 text-slate-600">
-                  Lag-free hardware acceleration, parallel download engine, and crystal clear multi-audio.
+                  Lag-free hardware acceleration, parallel download engine, and crystal clear multi-audio across Android, PC & Web.
                 </p>
               </div>
 
@@ -629,7 +715,7 @@ export default function App() {
                 </h2>
               </div>
 
-              <div className="rounded-[36px] border overflow-hidden backdrop-blur-[32px] shadow-2xl bg-white/80 border-white/95 shadow-soft-lg">
+              <div className="rounded-[36px] border overflow-hidden backdrop-blur-[32px] shadow-2xl bg-white/80 border-white/95">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse">
                     <thead>
@@ -637,7 +723,6 @@ export default function App() {
                         <th className="p-4 sm:p-6 text-xs font-bold uppercase text-slate-500">Feature</th>
                         <th className="p-4 sm:p-6 text-xs font-black uppercase text-rose-600 bg-rose-500/10">MovieDock PRO</th>
                         <th className="p-4 sm:p-6 text-xs font-bold uppercase text-slate-500">VidMate</th>
-                        <th className="p-4 sm:p-6 text-xs font-bold uppercase text-slate-500">MovieBox Pro</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y text-xs sm:text-sm divide-slate-200/60">
@@ -645,25 +730,21 @@ export default function App() {
                         <td className="p-4 sm:p-6 font-bold">4K HDR Playback Engine</td>
                         <td className="p-4 sm:p-6 text-rose-600 font-extrabold bg-rose-500/5"><Check className="w-4 h-4 inline mr-1 text-emerald-500 stroke-[3]" /> MPV Hardware (Zero Lag)</td>
                         <td className="p-4 sm:p-6 text-slate-400"><Ban className="w-4 h-4 inline mr-1 text-rose-400" /> Buffers on 1080p</td>
-                        <td className="p-4 sm:p-6 text-slate-400">VIP Subscription Required</td>
+                      </tr>
+                      <tr>
+                        <td className="p-4 sm:p-6 font-bold">Microsoft Store (Windows PC)</td>
+                        <td className="p-4 sm:p-6 text-rose-600 font-extrabold bg-rose-500/5"><Check className="w-4 h-4 inline mr-1 text-emerald-500 stroke-[3]" /> Verified PC Store App</td>
+                        <td className="p-4 sm:p-6 text-slate-400"><Ban className="w-4 h-4 inline mr-1 text-rose-400" /> Emulator Required</td>
+                      </tr>
+                      <tr>
+                        <td className="p-4 sm:p-6 font-bold">Web Browser Streaming</td>
+                        <td className="p-4 sm:p-6 text-rose-600 font-extrabold bg-rose-500/5"><Check className="w-4 h-4 inline mr-1 text-emerald-500 stroke-[3]" /> app.moviedock.space</td>
+                        <td className="p-4 sm:p-6 text-slate-400"><Ban className="w-4 h-4 inline mr-1 text-rose-400" /> App Only</td>
                       </tr>
                       <tr>
                         <td className="p-4 sm:p-6 font-bold">Ad Clutter & Spam</td>
                         <td className="p-4 sm:p-6 text-rose-600 font-extrabold bg-rose-500/5"><Check className="w-4 h-4 inline mr-1 text-emerald-500 stroke-[3]" /> Ultra-Clean UI</td>
                         <td className="p-4 sm:p-6 text-slate-400"><Ban className="w-4 h-4 inline mr-1 text-rose-400" /> Heavy Push Ad Spam</td>
-                        <td className="p-4 sm:p-6 text-slate-400">Login Walls</td>
-                      </tr>
-                      <tr>
-                        <td className="p-4 sm:p-6 font-bold">Direct Phone / SD Card Downloads</td>
-                        <td className="p-4 sm:p-6 text-rose-600 font-extrabold bg-rose-500/5"><Check className="w-4 h-4 inline mr-1 text-emerald-500 stroke-[3]" /> Parallel 8x Multi-Thread</td>
-                        <td className="p-4 sm:p-6 text-slate-400">Slow Server Speeds</td>
-                        <td className="p-4 sm:p-6 text-slate-400">Encrypted in-app cache</td>
-                      </tr>
-                      <tr>
-                        <td className="p-4 sm:p-6 font-bold">Dual Audio & Multi-Subtitles</td>
-                        <td className="p-4 sm:p-6 text-rose-600 font-extrabold bg-rose-500/5"><Check className="w-4 h-4 inline mr-1 text-emerald-500 stroke-[3]" /> Full Dual Audio Selector</td>
-                        <td className="p-4 sm:p-6 text-slate-400"><Ban className="w-4 h-4 inline mr-1 text-rose-400" /> Limited to Hindi/English</td>
-                        <td className="p-4 sm:p-6 text-slate-400">Requires Account</td>
                       </tr>
                     </tbody>
                   </table>
@@ -680,98 +761,20 @@ export default function App() {
                 <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight mt-3 text-slate-900">
                   How to Install MovieDock on Android
                 </h2>
-                <p className="text-sm mt-2 text-slate-600">
-                  Follow these 3 simple visual steps to enjoy unlimited 4K streaming.
-                </p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                
-                <div className="rounded-[36px] p-7 border backdrop-blur-[32px] flex flex-col justify-between shadow-2xl transition-all bg-white/80 border-white/95">
-                  <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-3xl font-black text-rose-500 font-mono">01</span>
-                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-rose-500/10 text-rose-600 border border-rose-500/20">Step One</span>
-                    </div>
-                    <h3 className="text-lg font-bold mb-2 text-slate-900">Download APK File</h3>
-                    <p className="text-xs leading-relaxed mb-6 text-slate-600">
-                      Tap the download button on our site to save the official package onto your Android device.
-                    </p>
+                {[
+                  { step: "01", title: "Download APK File", desc: "Tap the download button to save the official package." },
+                  { step: "02", title: "Allow Unknown Sources", desc: "Toggle allow installation from this source in settings." },
+                  { step: "03", title: "Install & Enjoy 4K", desc: "Open the downloaded file and enjoy unlimited 4K streaming." }
+                ].map((s, idx) => (
+                  <div key={idx} className="rounded-[36px] p-7 border backdrop-blur-[32px] flex flex-col justify-between shadow-2xl bg-white/80 border-white/95 text-left">
+                    <span className="text-3xl font-black text-rose-500 font-mono mb-4">{s.step}</span>
+                    <h3 className="text-lg font-bold mb-2 text-slate-900">{s.title}</h3>
+                    <p className="text-xs leading-relaxed text-slate-600">{s.desc}</p>
                   </div>
-
-                  <div className="rounded-2xl bg-slate-950 p-4 border border-white/10 text-left text-white shadow-inner">
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="w-2.5 h-2.5 rounded-full bg-red-500" />
-                      <div className="w-2.5 h-2.5 rounded-full bg-yellow-500" />
-                      <div className="w-2.5 h-2.5 rounded-full bg-green-500" />
-                      <span className="text-[10px] text-slate-400 ml-1">Chrome Browser</span>
-                    </div>
-                    <div className="p-3 rounded-xl bg-rose-500/20 border border-rose-500/40 flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Download className="w-4 h-4 text-rose-400 animate-bounce" />
-                        <div>
-                          <div className="text-[11px] font-bold text-white">MovieDock-v1.2.0.apk</div>
-                          <div className="text-[9px] text-rose-300">101 MB • Downloading...</div>
-                        </div>
-                      </div>
-                      <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/20 px-2 py-0.5 rounded">100%</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="rounded-[36px] p-7 border backdrop-blur-[32px] flex flex-col justify-between shadow-2xl transition-all bg-white/80 border-white/95">
-                  <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-3xl font-black text-rose-500 font-mono">02</span>
-                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-rose-500/10 text-rose-600 border border-rose-500/20">Step Two</span>
-                    </div>
-                    <h3 className="text-lg font-bold mb-2 text-slate-900">Allow Unknown Sources</h3>
-                    <p className="text-xs leading-relaxed mb-6 text-slate-600">
-                      If Android prompts security verification, toggle 'Allow installation from this source'.
-                    </p>
-                  </div>
-
-                  <div className="rounded-2xl bg-slate-950 p-4 border border-white/10 text-left text-white shadow-inner">
-                    <div className="flex items-center gap-2 mb-3">
-                      <Settings className="w-3.5 h-3.5 text-slate-400 animate-spin" />
-                      <span className="text-[10px] text-slate-400">Android Security Settings</span>
-                    </div>
-                    <div className="p-3 rounded-xl bg-slate-900 border border-white/10 flex items-center justify-between">
-                      <div>
-                        <div className="text-[11px] font-bold text-white">Allow from this source</div>
-                        <div className="text-[9px] text-slate-400">Required for APK side-loading</div>
-                      </div>
-                      <div className="w-10 h-6 bg-rose-500 rounded-full p-1 flex items-center justify-end shadow-sm">
-                        <div className="w-4 h-4 rounded-full bg-white shadow" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="rounded-[36px] p-7 border backdrop-blur-[32px] flex flex-col justify-between shadow-2xl transition-all bg-white/80 border-white/95">
-                  <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-3xl font-black text-rose-500 font-mono">03</span>
-                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-rose-500/10 text-rose-600 border border-rose-500/20">Step Three</span>
-                    </div>
-                    <h3 className="text-lg font-bold mb-2 text-slate-900">Install & Enjoy 4K</h3>
-                    <p className="text-xs leading-relaxed mb-6 text-slate-600">
-                      Open the finished download file, tap Install, and launch MovieDock instantly!
-                    </p>
-                  </div>
-
-                  <div className="rounded-2xl bg-slate-950 p-4 border border-white/10 text-left text-white shadow-inner">
-                    <div className="flex items-center gap-2 mb-3">
-                      <PlayCircle className="w-3.5 h-3.5 text-emerald-400" />
-                      <span className="text-[10px] text-slate-400">MovieDock Ready</span>
-                    </div>
-                    <div className="p-3 rounded-xl bg-gradient-to-r from-rose-500 to-pink-500 text-white flex items-center justify-between shadow-md">
-                      <div className="text-[11px] font-black">Launch MovieDock 4K</div>
-                      <span className="text-[10px] bg-black/30 px-2 py-0.5 rounded font-bold">READY</span>
-                    </div>
-                  </div>
-                </div>
-
+                ))}
               </div>
             </section>
 
@@ -788,10 +791,9 @@ export default function App() {
 
               <div className="space-y-3.5">
                 {[
-                  { q: "Is MovieDock APK 100% safe to install?", a: "Yes! MovieDock is built natively and contains zero spyware, crypto miners, or malicious code. Every release build is scanned with VirusTotal before being published." },
-                  { q: "Can I install MovieDock on Android TV or FireStick?", a: "Yes, MovieDock is fully compatible with Android TV, Google TV, and Amazon FireStick devices with landscape 16:9 navigation support." },
-                  { q: "How do I update to future versions?", a: "The app features an integrated In-App Update Engine. Whenever a new version is released on GitHub, MovieDock will automatically notify you with a single-tap update prompt." },
-                  { q: "Do I need to create an account or login to stream?", a: "No account or registration is required. You can search, stream in 4K HDR, and download offline files anonymously." }
+                  { q: "Can I watch MovieDock on PC without an emulator?", a: "Yes! MovieDock is officially available on the Microsoft Store for Windows 10/11, and directly in browser at app.moviedock.space." },
+                  { q: "Is MovieDock APK safe to install on Android?", a: "Yes! MovieDock is built natively and contains zero spyware or malicious code. Every release build is scanned with VirusTotal." },
+                  { q: "Do I need to create an account or pay?", a: "No account or subscription is required. MovieDock is free across Android, Windows PC, and Web." }
                 ].map((faq, idx) => (
                   <div key={idx} className="rounded-2xl border transition-all overflow-hidden bg-white/80 border-white/95 shadow-sm">
                     <button
@@ -812,239 +814,65 @@ export default function App() {
             </section>
           </>
         ) : currentPage === 'creator' ? (
-          /* ========================================================================= */
-          /* DEDICATED CREATOR STORY SCREEN */
-          /* ========================================================================= */
-          <div className="pt-32 pb-20 px-4 max-w-4xl mx-auto animate-in fade-in duration-300">
-            <div className="text-center mb-12">
-              <div className="w-14 h-14 rounded-3xl bg-rose-500/10 border border-rose-500/20 text-rose-600 mx-auto flex items-center justify-center mb-4 shadow-sm">
-                <Award className="w-7 h-7" />
-              </div>
-              <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900">
-                Meet The Mastermind
-              </h1>
-              <p className="text-sm text-slate-500 mt-2">The journey and vision behind MovieDock Ecosystem</p>
-            </div>
-
-            <div className="relative overflow-hidden rounded-[36px] p-8 sm:p-12 border backdrop-blur-[32px] shadow-2xl text-left bg-gradient-to-br from-white via-rose-50/80 to-pink-50/90 border-rose-200">
-              <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-bl from-rose-400/20 to-transparent rounded-full blur-3xl pointer-events-none" />
-
-              <div className="space-y-6 relative z-10">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/10 text-rose-600 border border-rose-500/20 text-xs font-black uppercase tracking-wider">
-                  <MapPin className="w-3.5 h-3.5" /> Bagan Kurram Agency • Pakistan
-                </div>
-                
-                <h2 className="text-2xl sm:text-4xl font-black tracking-tight text-slate-900">
-                  Salman Khan — <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-pink-600">Pioneering Vision</span>
+          /* CREATOR STORY */
+          <div className="pt-32 pb-20 px-4 max-w-4xl mx-auto text-left animate-in fade-in duration-300">
+            <div className="relative overflow-hidden rounded-[36px] p-8 sm:p-12 border backdrop-blur-[32px] shadow-2xl bg-gradient-to-br from-white via-rose-50/80 to-pink-50/90 border-rose-200">
+              <div className="space-y-4">
+                <span className="px-3 py-1 rounded-full bg-rose-500/10 text-rose-600 text-xs font-black uppercase">
+                  Bagan Kurram Agency • Pakistan
+                </span>
+                <h2 className="text-2xl sm:text-4xl font-black text-slate-900">
+                  Salman Khan — <span className="text-rose-600">Pioneering Vision</span>
                 </h2>
-                
-                <p className="text-base leading-relaxed text-slate-700">
-                  Hailing from the picturesque mountains of <strong>Bagan, Kurram Agency</strong>, Salman Khan is recognized as the pioneer <strong>first Pakhtoon software developer</strong> of his region to architect cutting-edge global Android media ecosystems like MovieDock. 
+                <p className="text-sm leading-relaxed text-slate-700">
+                  From the mountains of <strong>Bagan, Kurram Agency</strong>, Salman Khan is the first Pakhtoon developer of his region to build a global streaming platform. Combining his athletic discipline as a former <strong>Pakistan Under-19 Basketball Player</strong> with full-stack code craftsmanship.
                 </p>
-
-                <p className="text-base leading-relaxed text-slate-700">
-                  Balancing high-level athletic discipline as a former <strong>Pakistan Under-19 Basketball Player</strong> with elite full-stack software craftsmanship, Salman exemplifies how raw grit, relentless focus, and passion can bridge remote mountains with global technological impact. 
-                </p>
-
-                <div className="pt-4 flex flex-wrap items-center gap-3">
-                  <span className="px-4 py-2 rounded-2xl bg-white border border-rose-100 text-xs font-bold text-slate-800 shadow-sm flex items-center gap-2">
-                    🏀 Pakistan U19 Basketball Athlete
-                  </span>
-                  <span className="px-4 py-2 rounded-2xl bg-white border border-rose-100 text-xs font-bold text-slate-800 shadow-sm flex items-center gap-2">
-                    💻 Lead Full-Stack Architect
-                  </span>
-                  <span className="px-4 py-2 rounded-2xl bg-white border border-rose-100 text-xs font-bold text-slate-800 shadow-sm flex items-center gap-2">
-                    🚀 {liveDownloads.toLocaleString()}+ Active Users
-                  </span>
-                </div>
-
-                <div className="pt-6 border-t border-rose-100 flex items-center justify-between">
-                  <button 
-                    onClick={() => { setCurrentPage('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                    className="px-6 py-3 rounded-full bg-slate-900 text-white text-xs font-bold shadow-lg hover:bg-slate-800 transition-colors"
-                  >
-                    ← Back to Home
-                  </button>
-                  <span className="text-xs text-rose-600 font-bold italic">"Consistency beats talent when talent doesn't code consistently."</span>
-                </div>
+                <button 
+                  onClick={() => setCurrentPage('home')}
+                  className="px-6 py-2.5 rounded-full bg-slate-900 text-white text-xs font-bold"
+                >
+                  ← Back to Home
+                </button>
               </div>
             </div>
           </div>
         ) : (
           /* PRIVACY PAGE */
-          <div className="pt-28 pb-16 px-4 max-w-4xl mx-auto">
-            <div className="text-center mb-10">
-              <div className="w-12 h-12 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-600 mx-auto flex items-center justify-center mb-3">
-                <ShieldCheck className="w-6 h-6" />
-              </div>
-              <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
-                Privacy Policy & Safety
-              </h1>
-              <p className="text-sm text-slate-500 mt-2">MovieDock Official Portal • Android Security Verified</p>
-            </div>
-
-            <div className="space-y-4">
-              <div className="p-6 rounded-3xl border bg-white/80 border-white/95 shadow-sm">
-                <div className="flex items-center gap-3 font-bold text-base mb-2 text-rose-600">
-                  <Lock className="w-5 h-5" /> 1. Zero Personal Data Logging
-                </div>
-                <p className="text-sm leading-relaxed text-slate-600">
-                  MovieDock does not ask for or collect names, email addresses, phone numbers, or account passwords. You can search, stream, and download without registering.
-                </p>
-              </div>
-
-              <div className="p-6 rounded-3xl border bg-white/80 border-white/95 shadow-sm">
-                <div className="flex items-center gap-3 font-bold text-base mb-2 text-rose-600">
-                  <Server className="w-5 h-5" /> 2. Storage Permissions Explained
-                </div>
-                <p className="text-sm leading-relaxed text-slate-600">
-                  The application only requires storage access to write media files to your Downloads folder when you explicitly tap the download button.
-                </p>
-              </div>
-
-              <div className="p-6 rounded-3xl border bg-white/80 border-white/95 shadow-sm">
-                <div className="flex items-center gap-3 font-bold text-base mb-2 text-rose-600">
-                  <EyeOff className="w-5 h-5" /> 3. Advertising & Monetag Network
-                </div>
-                <p className="text-sm leading-relaxed text-slate-600">
-                  To provide continuous free downloads and server upkeep, non-intrusive ads from verified ad networks (like Monetag) may appear.
-                </p>
-              </div>
-
-              <div className="p-6 rounded-3xl border bg-white/80 border-white/95 shadow-sm">
-                <div className="flex items-center gap-3 font-bold text-base mb-2 text-rose-600">
-                  <FileText className="w-5 h-5" /> 4. Support & Legal Inquiries
-                </div>
-                <p className="text-sm leading-relaxed text-slate-600">
-                  For privacy inquiries or technical support, contact developer Salman Khan via the official WhatsApp channel.
-                </p>
-              </div>
+          <div className="pt-28 pb-16 px-4 max-w-4xl mx-auto text-left">
+            <h1 className="text-3xl font-extrabold text-slate-900 mb-6">Privacy Policy</h1>
+            <div className="p-6 rounded-3xl border bg-white/80 border-white/95 space-y-4 text-xs leading-relaxed text-slate-600">
+              <p><strong>1. Zero Data Logging:</strong> We do not collect names, emails, or personal information.</p>
+              <p><strong>2. Storage:</strong> Used only to save downloaded videos into your Downloads folder.</p>
             </div>
           </div>
         )}
       </main>
 
-      {/* ========================================================================= */}
       {/* FOOTER */}
-      {/* ========================================================================= */}
       <footer className="mt-20 border-t backdrop-blur-[32px] pt-14 pb-8 px-4 bg-white/75 border-white/95 text-slate-700 shadow-2xl">
-        <div className="max-w-6xl mx-auto flex flex-col gap-10">
-          
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-stretch">
+        <div className="max-w-6xl mx-auto flex flex-col gap-8 text-xs">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <Tv className="w-5 h-5 text-rose-500" />
+              <span className="font-extrabold text-slate-900 text-sm">MovieDock Ecosystem</span>
+            </div>
             
-            <div className="md:col-span-7 flex flex-col justify-between gap-4">
-              <div className="flex flex-col gap-3.5">
-                <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-2xl p-1 shadow-sm flex items-center justify-center overflow-hidden border bg-gradient-to-b from-white to-pink-50 border-white">
-                    {!footerLogoError ? (
-                      <img 
-                        src="/images/app-icon.png" 
-                        alt="MovieDock Logo" 
-                        onError={() => setFooterLogoError(true)}
-                        className="w-full h-full object-contain rounded-xl"
-                      />
-                    ) : (
-                      <Tv className="w-6 h-6 text-rose-500 stroke-[2]" />
-                    )}
-                  </div>
-                  <div>
-                    <div className="text-xl font-extrabold tracking-tight flex items-center gap-2 text-slate-900">
-                      MovieDock
-                      <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 text-[10px] font-bold">Official</span>
-                    </div>
-                    <div className="text-xs text-slate-500 font-medium">Android 4K Streaming Ecosystem</div>
-                  </div>
-                </div>
-
-                <p className="text-xs text-slate-600 leading-relaxed max-w-md">
-                  Next-generation mobile streaming portal and offline downloader. Built for ultra-fast, seamless entertainment on all Android devices.
-                </p>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border text-[11px] font-semibold shadow-sm bg-white border-slate-200 text-slate-600">
-                  <BadgeCheck className="w-3.5 h-3.5 text-rose-500" /> Verified Clean Build
-                </span>
-                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full border text-[11px] font-semibold shadow-sm bg-white border-slate-200 text-slate-600">
-                  {releaseData.version} Stable
-                </span>
-              </div>
-            </div>
-
-            <div className="md:col-span-5 flex flex-col justify-between gap-3">
-              <div>
-                <div className="text-xs font-black uppercase tracking-wider text-slate-400 mb-2">Support Us & Share</div>
-                
-                <div className="flex items-center gap-2">
-                  <a
-                    href="https://wa.me/923275176283?text=Hi%20MovieDock%20Support,%20I%20need%20help%20with%20the%20APK"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1 flex items-center justify-between px-4 py-3 rounded-2xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-700 transition-all shadow-sm"
-                  >
-                    <div className="flex items-center gap-2">
-                      <MessageCircle className="w-4 h-4 text-emerald-600 stroke-[2]" />
-                      <span className="text-xs font-bold text-slate-900">WhatsApp</span>
-                    </div>
-                    <ArrowUpRight className="w-4 h-4 text-emerald-600" />
-                  </a>
-
-                  <button
-                    onClick={handleShare}
-                    className="flex-1 flex items-center justify-between px-4 py-3 rounded-2xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-700 transition-all shadow-sm"
-                  >
-                    <div className="flex items-center gap-2">
-                      <Share2 className="w-4 h-4 text-rose-500 stroke-[2]" />
-                      <span className="text-xs font-bold text-slate-900">Share App</span>
-                    </div>
-                    <Share2 className="w-3.5 h-3.5 text-rose-500" />
-                  </button>
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-1.5 text-xs font-semibold text-slate-600">
-                <a 
-                  href="https://www.tiktok.com/@moviedockofficial"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-left hover:text-rose-600 transition-colors py-1 flex items-center justify-between border-b border-slate-200 text-rose-600"
-                >
-                  <span className="flex items-center gap-2">
-                    <Video className="w-4 h-4 fill-rose-600" /> Official TikTok Channel
-                  </span>
-                  <span>→</span>
-                </a>
-                <button 
-                  onClick={() => { setCurrentPage('creator'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                  className="text-left hover:text-rose-600 transition-colors py-1 flex items-center justify-between border-b border-slate-200"
-                >
-                  <span>About Creator (Salman Khan)</span>
-                  <span className="text-slate-400">→</span>
-                </button>
-              </div>
-
-            </div>
-
-          </div>
-
-          <div className="p-4 rounded-2xl border text-[11px] leading-relaxed flex items-start gap-3 shadow-sm bg-white/80 border-white text-slate-600">
-            <ShieldCheck className="w-4 h-4 text-rose-500 stroke-[2] flex-shrink-0 mt-0.5" />
-            <span>
-              <strong>DMCA & Disclaimer:</strong> MovieDock is an indexing and media management portal that does not host or broadcast video streams on its servers. All copyrights belong to their respective owners in compliance with 17 U.S.C. § 512.
-            </span>
-          </div>
-
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 pt-4 border-t border-slate-200">
-            <div className="flex items-center gap-1.5">
-              <span>Crafted with</span>
-              <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" />
-              <span>by <strong>Salman Khan</strong> • MovieDock Ecosystem © 2026</span>
-            </div>
-            <div className="text-[11px] text-slate-400">
-              All Rights Reserved.
+            <div className="flex flex-wrap items-center gap-4 font-bold">
+              <a href={MICROSOFT_STORE_URL} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline flex items-center gap-1">
+                Microsoft Store (PC) <ArrowUpRight className="w-3.5 h-3.5" />
+              </a>
+              <a href={WEB_APP_URL} target="_blank" rel="noopener noreferrer" className="text-rose-600 hover:underline flex items-center gap-1">
+                Web App <ArrowUpRight className="w-3.5 h-3.5" />
+              </a>
+              <button onClick={() => setCurrentPage('creator')} className="hover:text-rose-600">About Creator</button>
+              <button onClick={() => setCurrentPage('privacy')} className="hover:text-rose-600">Privacy Policy</button>
             </div>
           </div>
 
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-200/60 pt-4 text-slate-500">
+            <span>Crafted with ❤️ by <strong>Salman Khan</strong> • MovieDock © 2026</span>
+            <span>v1.2.0 Stable Release</span>
+          </div>
         </div>
       </footer>
 
