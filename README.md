@@ -234,6 +234,36 @@ Built with passion for technology, entertainment, and software development.
 
 ---
 
+
+---
+
+## 💼 Hire Me — App, Website & Logo Development
+
+Need a professional digital solution for your business, startup, or personal project?
+
+I offer development services for:
+
+- 📱 **Mobile App Development** — Android applications using Flutter.
+- 🌐 **Website Development** — Modern, responsive websites and web applications.
+- 🎨 **Logo & UI/UX Design** — Creative logos, application interfaces, and branding.
+- 💻 **Custom Software Solutions** — Digital solutions tailored to your requirements.
+
+### 📲 Contact Me on WhatsApp
+
+**Developer:** Salman Khan Orakzai  
+**Founder of:** MovieDock & BIT MODS
+
+Have a project idea? Let's turn it into reality!
+
+👉 **[Chat with Me Directly on WhatsApp](https://wa.me/923275176283)**
+
+📞 WhatsApp: [+92 327 5176283](https://wa.me/923275176283)
+
+*Contact me directly to discuss your project, requirements, and pricing.*
+
+---
+
+
 ## ⚖️ Disclaimer
 
 MovieDock is an entertainment software project. Availability of movies, series, streaming links, and downloads depends on the configured content sources and applicable permissions.
